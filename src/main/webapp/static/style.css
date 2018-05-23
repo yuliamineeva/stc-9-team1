@@ -1,0 +1,82 @@
+body {
+    font: 12px/18px Arial, sans-serif;
+    background: #696969;
+    margin: 0; /* Убираем отступы */
+}
+.container {
+    width: 90vw;
+    height:97vh;
+    margin: 0 auto; /* Выравнивание по центру */
+    position: relative; /* Относительное позиционирование */
+    background: #FFD700; /* Цвет фона левой колонки */
+}
+
+/* Header
+-----------------------------------------------------------------------------*/
+.header {
+    height: 60px;
+    background: #FFA07A;
+    font: 20px Arial;
+    font-style: italic;
+}
+.logo {
+    font: 18px Arial;
+    font-style: italic;
+    padding: 5px 0 0 20px;
+}
+.logout {
+    font: 16px Arial;
+    text-align: right;
+    padding-right: 10px;
+}
+
+/* Left Sidebar
+-----------------------------------------------------------------------------*/
+.sidebar {
+    margin-top: 10px;
+    width: 250px;
+    padding: 0 10px; /* Отступы вокруг текста */
+    font-size: 16px;
+}
+
+/* Middle
+-----------------------------------------------------------------------------*/
+.main {
+    position: absolute; /* Абсолютное позиционирование */
+    left: 270px; /* Отступ слева */
+    top: 60px;
+    bottom: 30px;
+    right: 0px;
+    overflow: auto;
+    background: #E0FFFF; /* Цвет фона правой колонки */
+}
+.main_content {
+    padding: 10px;
+    font-size: 14px;
+}
+.main_login {
+    padding: 10px;
+    font-size: 14px;
+    text-align: center;
+}
+.enter {
+    font: 30px Arial;
+    text-align: center;
+}
+
+/* Footer
+-----------------------------------------------------------------------------*/
+.footer {
+    position: absolute; /* Абсолютное позиционирование */
+    left: 0px; /* Отступ слева */
+    bottom: 0px;
+    right: 0px;
+    height: 30px;
+    background: #FFA07A;
+}
+.footer_content{
+    text-align: center;
+    font: 14px Arial;
+    font-style: italic;
+    padding: 7px;
+}
