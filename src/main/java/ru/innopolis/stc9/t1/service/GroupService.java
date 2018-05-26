@@ -16,7 +16,19 @@ public class GroupService {
         return groupDAO.getGroupById(1);
     }
 
-    public ArrayList<Group> getAllSubjects(){
-        return groupDAO.getAllGroup();
+    public Group getGrouptByName(String name){
+        return groupDAO.getGroupByName(name);
+    }
+
+    public ArrayList<Group> getAllGroups(){
+        return groupDAO.getAllGroups();
+    }
+
+    public boolean addGroup(Group group){
+        return groupDAO.addGroup(group);
+    }
+
+    public boolean deleteGroup(int id) {
+        return groupDAO.deleteGroup(id);
     }
 }

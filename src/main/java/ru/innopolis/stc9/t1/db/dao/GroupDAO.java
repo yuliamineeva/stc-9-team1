@@ -8,7 +8,13 @@ public interface GroupDAO {
 
     public Group getGroupById(int id);
 
-    public ArrayList<Group> getAllGroup();
+    public Group getGroupByName(String name);
+
+    public ArrayList<Group> getAllGroups();
+
+    public boolean addGroup(Group group);
+
+    public boolean deleteGroup(int id);
 
 }
 

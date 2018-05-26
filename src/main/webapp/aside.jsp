@@ -4,8 +4,8 @@
 <div class="sidebar">
     <p><b>МЕНЮ:</b></p>
     <ul>
-        <li><a href="${pageContext.request.contextPath}/ToDo1">Меню1</a></li>
-        <li><a href="${pageContext.request.contextPath}/ToDo2">Меню2</a></li>
-        <li><a href="${pageContext.request.contextPath}/ToDo3">Меню3</a></li>
+        <li><a href="${pageContext.request.contextPath}/groups">Группы</a></li><br>
+        <li><a href="${pageContext.request.contextPath}/ToDo2">Меню2</a></li><br>
+        <li><a href="${pageContext.request.contextPath}/ToDo3">Меню3</a></li><br>
     </ul>
 </div>
