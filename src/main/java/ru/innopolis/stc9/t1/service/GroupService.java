@@ -13,10 +13,10 @@ public class GroupService {
     GroupDAO groupDAO = new GroupDAOImpl();
 
     public Group getGrouptById(int id){
-        return groupDAO.getGroupById(1);
+        return groupDAO.getGroupById(id);
     }
 
-    public Group getGrouptByName(String name){
+    public Group getGroupByName(String name){
         return groupDAO.getGroupByName(name);
     }
 
@@ -26,6 +26,10 @@ public class GroupService {
 
     public boolean addGroup(Group group){
         return groupDAO.addGroup(group);
+    }
+
+    public boolean updateGroup(Group group){
+        return groupDAO.updateGroup(group);
     }
 
     public boolean deleteGroup(int id) {
