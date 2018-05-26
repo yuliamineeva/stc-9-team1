@@ -48,9 +48,74 @@ public class GroupDAOImpl implements GroupDAO {
     }
 
     @Override
-    public ArrayList<Group> getAllGroup() {
-        return null;
+    public Group getGroupByName(String name){
+        Group group = null;
+        String sqlRequest = "SELECT * FROM groups WHERE name = ?";
+        Connection connection = connectionManager.getConnection();
+        try {
+            PreparedStatement statement = connection.prepareStatement(sqlRequest);
+            statement.setString(1, name);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                group = createGroup(resultSet);
+            }
+            connection.close();
+        }catch (SQLException ex) {
+            logger.error("Error to get Group by Name",ex);
+        }
+        return group;
     }
 
+    @Override
+    public ArrayList<Group> getAllGroups() {
+        ArrayList<Group> arrayGroup = new ArrayList<>();
+        String sqlRequest = "SELECT * FROM groups";
+        Connection connection = connectionManager.getConnection();
+        try {
+            PreparedStatement statement = connection.prepareStatement(sqlRequest);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                arrayGroup.add(createGroup(resultSet));
+            }
+            connection.close();
+        }catch (SQLException ex) {
+            logger.error("Error to get all groups",ex);
+        }
+        return arrayGroup;
+    }
 
+    @Override
+    public boolean addGroup(Group group) {
+        if(getGroupByName(group.getName()) != null)return false;
+        String sqlRequest = "INSERT INTO groups (name) VALUES(?)";
+        int result = 0;
+        Connection connection = connectionManager.getConnection();
+        try{
+            PreparedStatement statement = connection.prepareStatement(sqlRequest);
+            statement.setString(1, group.getName());
+            result = statement.executeUpdate();
+            connection.close();
+        }catch (SQLException ex) {
+            logger.error("Error adding group to DB",ex);
+            return false;
+        }
+        return (result>0);
+    }
+
+    @Override
+    public boolean deleteGroup(int id) {
+        String sqlRequest = "DELETE FROM groups WHERE group_id = ?";
+        int result = 0;
+        Connection connection = connectionManager.getConnection();
+        try{
+            PreparedStatement statement = connection.prepareStatement(sqlRequest);
+            statement.setInt(1, id);
+            result = statement.executeUpdate();
+            connection.close();
+        }catch (SQLException ex) {
+            logger.error("Error delete group from DB",ex);
+            return false;
+        }
+        return (result>0);
+    }
 }

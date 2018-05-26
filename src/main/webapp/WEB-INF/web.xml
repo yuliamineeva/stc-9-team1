@@ -14,4 +14,13 @@
         <url-pattern>/groups</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>GroupEditController</servlet-name>
+        <servlet-class>ru.innopolis.stc9.t1.controller.GroupEditController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GroupEditController</servlet-name>
+        <url-pattern>/groups/edit</url-pattern>
+    </servlet-mapping>
+
 </web-app>
