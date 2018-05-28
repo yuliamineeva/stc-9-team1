@@ -1,3 +1,4 @@
+<%@ page import="ru.innopolis.stc9.t1.service.GroupService" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -9,6 +10,13 @@
                 "<div style=\"color: Red;\">" +
                         "<b>Ошибка при добавлении группы. Проверьте корреткность введенных данных</b><br>" +
                         "<b>Возможно, такая группа уже существует!</b>" +
+                        "</div>" +
+                        "<br><br>" : ""
+        %>
+        <%=("editErr".equals(request.getParameter("result"))) ?
+                "<div style=\"color: Red;\">" +
+                        "<b>Ошибка при изменении группы. Проверьте корреткность введенных данных</b><br>" +
+                        "<b>Возможно, группа с таким именем уже существует!</b>" +
                         "</div>" +
                         "<br><br>" : ""
         %>
@@ -43,6 +51,31 @@
                     <tr>
                         <td align="left"><input type="reset" value="Сбросить"></td>
                         <td align="right"><input type="submit" name="submit" value="Добавить"></td>
+                    </tr>
+                </table>
+            </form>
+            </p>
+        </c:if>
+        <c:if test="${attr_act != null && attr_act.equals('edit')}">
+            <p align="center">Редактировать группу:
+            <form name="group_edit" action="${pageContext.request.contextPath}/groups/edit" method="post">
+                <table border="2" align="center" cellspacing="5" cellpadding="13" rules="none">
+                    <tr>
+                        <td align="left">Название группы:</td>
+                        <td align="left">
+                            <%
+                                GroupService groupService = new GroupService();
+                                String strGroupId = request.getParameter("group_id");
+                                String strName = groupService.getGrouptById(Integer.valueOf(strGroupId)).getName();
+                                request.setAttribute("attr_groupName", strName);
+                            %>
+                            <input type="text" name="groupName" size="50" value=${attr_groupName}>
+                            <input type="hidden" name="groupId" value=${attr_groupId}>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="left"><input type="reset" value="Сбросить"></td>
+                        <td align="right"><input type="submit" name="submit" value="Изменить"></td>
                     </tr>
                 </table>
             </form>

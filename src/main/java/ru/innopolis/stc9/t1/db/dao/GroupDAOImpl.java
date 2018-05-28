@@ -16,6 +16,7 @@ public class GroupDAOImpl implements GroupDAO {
     private final static Logger logger = Logger.getLogger(GroupDAOImpl.class);
 
     private Group createGroup(ResultSet resultSet){
+        if(resultSet == null) return null;
         Group group = null;
         try{
             group = new Group(
@@ -49,6 +50,7 @@ public class GroupDAOImpl implements GroupDAO {
 
     @Override
     public Group getGroupByName(String name){
+        if(name == null) return null;
         Group group = null;
         String sqlRequest = "SELECT * FROM groups WHERE name = ?";
         Connection connection = connectionManager.getConnection();
@@ -86,6 +88,7 @@ public class GroupDAOImpl implements GroupDAO {
 
     @Override
     public boolean addGroup(Group group) {
+        if(group == null) return false;
         if(getGroupByName(group.getName()) != null)return false;
         String sqlRequest = "INSERT INTO groups (name) VALUES(?)";
         int result = 0;
@@ -97,6 +100,28 @@ public class GroupDAOImpl implements GroupDAO {
             connection.close();
         }catch (SQLException ex) {
             logger.error("Error adding group to DB",ex);
+            return false;
+        }
+        return (result>0);
+    }
+
+    @Override
+    public boolean updateGroup(Group group){
+        if(group == null) return false;
+        if(group.getGroup_id() < 1)return false;
+        Group findGroup = getGroupByName(group.getName());
+        if(findGroup != null && findGroup.getGroup_id() != group.getGroup_id()) return false;
+        String sqlRequest = "UPDATE groups SET name = ? WHERE group_id = ?";
+        int result = 0;
+        Connection connection = connectionManager.getConnection();
+        try{
+            PreparedStatement statement = connection.prepareStatement(sqlRequest);
+            statement.setString(1, group.getName());
+            statement.setInt(2, group.getGroup_id());
+            result = statement.executeUpdate();
+            connection.close();
+        }catch (SQLException ex) {
+            logger.error("Error updating group to DB",ex);
             return false;
         }
         return (result>0);

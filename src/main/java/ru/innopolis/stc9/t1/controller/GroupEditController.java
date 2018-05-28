@@ -43,8 +43,24 @@ public class GroupEditController extends HttpServlet {
                     resp.sendRedirect(req.getContextPath() + "/groups/edit?act=add&result=addErr");
                 }
                 break;
-            case "Удалить":
+            case "Изменить":
+                groupName = req.getParameter("groupName");
                 String groupId = req.getParameter("groupId");
+                try{
+                    group = new Group(Integer.valueOf(groupId),groupName);
+                    boolean result = groupService.updateGroup(group);
+                    if(result){
+                        resp.sendRedirect(req.getContextPath() + "/groups");
+                    }else{
+                        resp.sendRedirect(req.getContextPath() + "/groups/edit?act=edit&group_id="+groupId+"&result=editErr");
+                    }
+                }catch(Exception ex){
+                    logger.error("Error to edit group",ex);
+                    resp.sendRedirect(req.getContextPath() + "/groups/edit?act=edit&group_id="+groupId+"&result=editErr");
+                }
+                break;
+            case "Удалить":
+                groupId = req.getParameter("groupId");
                 try{
                     boolean result = groupService.deleteGroup(Integer.valueOf(groupId));
                     if(result){
