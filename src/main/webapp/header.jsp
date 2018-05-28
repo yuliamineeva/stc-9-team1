@@ -8,7 +8,7 @@
     <title>MyUniversity</title>
     <meta name="keywords" content="MyUniversity"/>
     <meta name="description" content="test site"/>
-    <link href="/static/style.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/static/style.css" rel="stylesheet">
 </head>
 
 <body>
@@ -20,9 +20,12 @@
         <div class="logout">
             <c:if test="${sessionScope.user != null}">
                 <c:out value="Вы вошли как: "/>
-                <c:out value="ToDo"/>
+                <c:out value="${sessionScope.login}"/>
+                <c:out value="${sessionScope.userInfo}"/>
                 <c:out value="|   "/>
                 <a href="${pageContext.request.contextPath}/login?action=logout">Выйти</a>
             </c:if>
         </div>
     </header>
+
+    <!-- Элемент </div> закрыт в footer.jsp -->
