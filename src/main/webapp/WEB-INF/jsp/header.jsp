@@ -8,7 +8,7 @@
     <title>MyUniversity</title>
     <meta name="keywords" content="MyUniversity"/>
     <meta name="description" content="test site"/>
-    <link href="${pageContext.request.contextPath}/static/style.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="<c:url value="${pageContext.request.contextPath}/resources/style.css"/>"/>
 </head>
 
 <body>
@@ -27,5 +27,3 @@
             </c:if>
         </div>
     </header>
-
-    <!-- Элемент </div> закрыт в footer.jsp -->
