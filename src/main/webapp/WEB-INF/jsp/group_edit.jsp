@@ -6,39 +6,43 @@
 <%@ include file="aside.jsp" %>
 <div class="main">
     <div class="main_login">
-        <%=("addErr".equals(request.getParameter("result"))) ?
-                "<div style=\"color: Red;\">" +
-                        "<b>Ошибка при добавлении группы. Проверьте корреткность введенных данных</b><br>" +
-                        "<b>Возможно, такая группа уже существует!</b>" +
-                        "</div>" +
-                        "<br><br>" : ""
-        %>
-        <%=("editErr".equals(request.getParameter("result"))) ?
-                "<div style=\"color: Red;\">" +
-                        "<b>Ошибка при изменении группы. Проверьте корреткность введенных данных</b><br>" +
-                        "<b>Возможно, группа с таким именем уже существует!</b>" +
-                        "</div>" +
-                        "<br><br>" : ""
-        %>
-        <%=("delErr".equals(request.getParameter("result"))) ?
-                "<div style=\"color: Red;\">" +
-                        "<b>Ошибка при удалении группы.</b>" +
-                        "</div>" +
-                        "<br><br>" : ""
-        %>
+        <c:if test="${result != null}">
+            <div style="color: Red;">
+            <c:if test="${result.equals('addErr')}">
+                <b>Ошибка при добавлении группы. Проверьте корреткность введенных данных</b><br>
+                <b>Возможно, такая группа уже существует!</b>
+            </c:if>
+            <c:if test="${result.equals('editErr')}">
+                <b>Ошибка при изменении группы. Проверьте корреткность введенных данных</b><br>
+                <b>Возможно, группа с таким именем уже существует!</b>
+            </c:if>
+            <c:if test="${result.equals('delErr')}">
+                <b>Ошибка при удалении группы.</b>
+            </c:if>
+            </div>
+            <br><br>
+        </c:if>
+
         <%
-            request.setAttribute("attr_act", request.getParameter("act"));
-            request.setAttribute("attr_groupId", request.getParameter("group_id"));
+            String paramAct = request.getParameter("act");
+            if(paramAct != null && !paramAct.equals("")) {
+                request.setAttribute("act", paramAct);
+            }
+            String paramGroupId = request.getParameter("groupId");
+            if(paramGroupId != null && !paramGroupId.equals("")) {
+                request.setAttribute("groupId", paramGroupId);
+            }
         %>
-        <c:if test="${attr_act != null && attr_act.equals('delete')}">
-            <p align="center">Вы действительно хотите удалить группу с ID=${attr_groupId}?
+
+        <c:if test="${act != null && act.equals('delete')}">
+            <p align="center">Вы действительно хотите удалить группу с ID=${groupId}?
             <form name="group_delete" action="${pageContext.request.contextPath}/groups/edit" method="post">
-                <input type="submit" name="submit" value="Удалить">
-                <input type="hidden" name="groupId" value=${attr_groupId}>
+                <input type="submit" name="submit" value="Delete">
+                <input type="hidden" name="groupId" value=${groupId}>
             </form>
             </p>
         </c:if>
-        <c:if test="${attr_act != null && attr_act.equals('add')}">
+        <c:if test="${act != null && act.equals('add')}">
             <p align="center">Добавить группу:
             <form name="group_add" action="${pageContext.request.contextPath}/groups/edit" method="post">
                 <table border="2" align="center" cellspacing="5" cellpadding="13" rules="none">
@@ -50,13 +54,13 @@
                     </tr>
                     <tr>
                         <td align="left"><input type="reset" value="Сбросить"></td>
-                        <td align="right"><input type="submit" name="submit" value="Добавить"></td>
+                        <td align="right"><input type="submit" name="submit" value="Add"></td>
                     </tr>
                 </table>
             </form>
             </p>
         </c:if>
-        <c:if test="${attr_act != null && attr_act.equals('edit')}">
+        <c:if test="${act != null && act.equals('edit')}">
             <p align="center">Редактировать группу:
             <form name="group_edit" action="${pageContext.request.contextPath}/groups/edit" method="post">
                 <table border="2" align="center" cellspacing="5" cellpadding="13" rules="none">
@@ -65,17 +69,17 @@
                         <td align="left">
                             <%
                                 GroupService groupService = new GroupService();
-                                String strGroupId = request.getParameter("group_id");
-                                String strName = groupService.getGrouptById(Integer.valueOf(strGroupId)).getName();
-                                request.setAttribute("attr_groupName", strName);
+                                int id = Integer.valueOf((String)request.getAttribute("groupId"));
+                                String strName = groupService.getGrouptById(id).getName();
+                                request.setAttribute("groupName", strName);
                             %>
-                            <input type="text" name="groupName" size="50" value=${attr_groupName}>
-                            <input type="hidden" name="groupId" value=${attr_groupId}>
+                            <input type="text" name="groupName" size="50" value=${groupName}>
+                            <input type="hidden" name="groupId" value=${groupId}>
                         </td>
                     </tr>
                     <tr>
                         <td align="left"><input type="reset" value="Сбросить"></td>
-                        <td align="right"><input type="submit" name="submit" value="Изменить"></td>
+                        <td align="right"><input type="submit" name="submit" value="Edit"></td>
                     </tr>
                 </table>
             </form>
