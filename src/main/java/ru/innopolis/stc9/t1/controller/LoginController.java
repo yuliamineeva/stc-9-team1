@@ -1,6 +1,11 @@
 package ru.innopolis.stc9.t1.controller;
 
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import ru.innopolis.stc9.t1.pojo.User;
 import ru.innopolis.stc9.t1.service.UserService;
 
@@ -10,11 +15,26 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Controller
 public class LoginController extends HttpServlet {
     private static Logger logger = Logger.getLogger(LoginController.class);
     private UserService userService = new UserService();
 
-    @Override
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String login(
+            @RequestParam(value = "error", required = false) String error,
+            @RequestParam(value = "logout", required = false) String logout, Model model) {
+
+        if (error != null) {
+            model.addAttribute("error", "Invalid username and password!");
+        }
+        if (logout != null) {
+            model.addAttribute("msg", "You've been logged out successfully.");
+        }
+        return "login";
+    }
+
+    /*@Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
         if ("logout".equals(action)) {
@@ -24,9 +44,9 @@ public class LoginController extends HttpServlet {
         resp.setCharacterEncoding("UTF-8");
         req.setAttribute("message", "Введите логин и пароль");
         req.getRequestDispatcher("/login.jsp").forward(req, resp);
-    }
+    }*/
 
-    @Override
+    /*@Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         resp.setCharacterEncoding("UTF-8");
@@ -45,5 +65,5 @@ public class LoginController extends HttpServlet {
         } else {
             resp.sendRedirect(req.getContextPath() + "/login?errorMsg=authErr");
         }
-    }
+    }*/
 }
