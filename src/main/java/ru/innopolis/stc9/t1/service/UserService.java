@@ -1,5 +1,6 @@
 package ru.innopolis.stc9.t1.service;
 
+import ru.innopolis.stc9.t1.db.connection.CryptoUtils;
 import ru.innopolis.stc9.t1.db.dao.UserDAO;
 import ru.innopolis.stc9.t1.db.dao.UserDAOImpl;
 import ru.innopolis.stc9.t1.pojo.User;
@@ -16,7 +17,7 @@ public class UserService {
     public boolean checkAuth(String login, String password) {
         User user = userDao.getUserByLogin(login);
         String passwordFromBD = user.getPassword();
-        String hashPassword = user.computeHashPassword(password);
+        String hashPassword = CryptoUtils.computeHashPassword(password);
         return (user != null) && (passwordFromBD.equals(hashPassword));
     }
 

@@ -1,10 +1,6 @@
 package ru.innopolis.stc9.t1.pojo;
 
-import org.apache.log4j.Logger;
-import ru.innopolis.stc9.t1.db.connection.CryptoUtils;
-
 public class User {
-    private final static Logger logger = Logger.getLogger(User.class);
     private int id;
     private String login;
     private String password;
@@ -60,7 +56,7 @@ public class User {
         this.password = password;
     }
 
-    public String getHashPassword() {
+    /*public String getHashPassword() {
         String hashPassword = null;
         try {
             hashPassword = CryptoUtils.byteArrayToHexString(CryptoUtils.computeHash(password));
@@ -68,17 +64,7 @@ public class User {
             logger.error("Error trying to get hashpassword", e);
         }
         return hashPassword;
-    }
-
-    public String computeHashPassword(String passwordToHash) {
-        String hashPassword = null;
-        try {
-            hashPassword = CryptoUtils.byteArrayToHexString(CryptoUtils.computeHash(passwordToHash));
-        } catch (Exception e) {
-            logger.error("Error trying to get hashpassword", e);
-        }
-        return hashPassword;
-    }
+    }*/
 
     public String getName() {
         return name;
