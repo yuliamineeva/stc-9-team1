@@ -30,8 +30,8 @@
                             <tr>
                                 <td>${group.group_id}</td>
                                 <td>${group.name}</td>
-                                <td><a href="${pageContext.request.contextPath}/groups/edit?act=edit&group_id=${group.group_id}">Изменить</a></td>
-                                <td><a href="${pageContext.request.contextPath}/groups/edit?act=delete&group_id=${group.group_id}">Удалить</a></td>
+                                <td><a href="${pageContext.request.contextPath}/groups/edit?act=edit&groupId=${group.group_id}">Изменить</a></td>
+                                <td><a href="${pageContext.request.contextPath}/groups/edit?act=delete&groupId=${group.group_id}">Удалить</a></td>
                             </tr>
                         </c:if>
                     </c:forEach>
