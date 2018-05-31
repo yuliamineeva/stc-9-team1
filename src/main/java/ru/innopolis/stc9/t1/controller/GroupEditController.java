@@ -1,78 +1,85 @@
 package ru.innopolis.stc9.t1.controller;
 
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import ru.innopolis.stc9.t1.pojo.Group;
 import ru.innopolis.stc9.t1.service.GroupService;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-
-public class GroupEditController extends HttpServlet {
+@Controller
+public class GroupEditController{
     private final static Logger logger = Logger.getLogger(GroupEditController.class);
     private GroupService groupService = new GroupService();
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
-        resp.setCharacterEncoding("UTF-8");
-        req.getRequestDispatcher("/group_edit.jsp").forward(req, resp);
+    @RequestMapping(value = "/groups/edit", method = RequestMethod.GET)
+    public String getGroupEditPage(
+            @RequestParam(value = "result", required = false) String result,
+            @RequestParam(value = "act", required = false) String act,
+            @RequestParam(value = "groupId", required = false) String groupId, Model model) {
+        if (result != null) {
+            model.addAttribute("result", result);
+        }
+        if (act != null) {
+            model.addAttribute("act", act);
+        }
+        if (groupId != null) {
+            model.addAttribute("groupId", groupId);
+        }
+        return "group_edit";
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
-        resp.setCharacterEncoding("UTF-8");
-        String typeRequest = req.getParameter("submit");
-        switch(typeRequest){
-            case "Добавить":
-                String groupName = req.getParameter("groupName");
-                Group group = null;
-                try{
-                    group = new Group(-1,groupName);
-                    boolean result = groupService.addGroup(group);
-                    if(result){
-                        resp.sendRedirect(req.getContextPath() + "/groups");
-                    }else{
-                        resp.sendRedirect(req.getContextPath() + "/groups/edit?act=add&result=addErr");
+    @RequestMapping(value = "/groups/edit", method = RequestMethod.POST)
+    public String processGroupEditPage(
+            @RequestParam(value = "submit", required = true) String submit,
+            @RequestParam(value = "groupName", required = false) String groupName,
+            @RequestParam(value = "groupId", required = false) String groupId, Model model) {
+        switch(submit){
+            case "Add":
+                if(groupName != null) {
+                    Group group = null;
+                    try {
+                        group = new Group(-1, groupName);
+                        boolean result = groupService.addGroup(group);
+                        if (result) return "groups";
+                    } catch (Exception e) {
+                        logger.error("Error to add group", e);
                     }
-                }catch(Exception ex){
-                    logger.error("Error to add group",ex);
-                    resp.sendRedirect(req.getContextPath() + "/groups/edit?act=add&result=addErr");
                 }
+                model.addAttribute("result", "addErr");
+                model.addAttribute("act", "add");
                 break;
-            case "Изменить":
-                groupName = req.getParameter("groupName");
-                String groupId = req.getParameter("groupId");
-                try{
-                    group = new Group(Integer.valueOf(groupId),groupName);
-                    boolean result = groupService.updateGroup(group);
-                    if(result){
-                        resp.sendRedirect(req.getContextPath() + "/groups");
-                    }else{
-                        resp.sendRedirect(req.getContextPath() + "/groups/edit?act=edit&group_id="+groupId+"&result=editErr");
+            case "Edit":
+                if(groupName != null && groupId != null) {
+                    try {
+                        Group group = new Group(Integer.valueOf(groupId), groupName);
+                        boolean result = groupService.updateGroup(group);
+                        if (result) return "groups";
+                    } catch (Exception e) {
+                        logger.error("Error to edit group", e);
                     }
-                }catch(Exception ex){
-                    logger.error("Error to edit group",ex);
-                    resp.sendRedirect(req.getContextPath() + "/groups/edit?act=edit&group_id="+groupId+"&result=editErr");
                 }
+                model.addAttribute("result", "editErr");
+                model.addAttribute("act", "edit");
+                model.addAttribute("group_id", groupId);
                 break;
-            case "Удалить":
-                groupId = req.getParameter("groupId");
-                try{
-                    boolean result = groupService.deleteGroup(Integer.valueOf(groupId));
-                    if(result){
-                        resp.sendRedirect(req.getContextPath() + "/groups");
-                    }else{
-                        resp.sendRedirect(req.getContextPath() + "/groups/edit?act=delete&group_id="+groupId+"&result=delErr");
+            case "Delete":
+                if(groupId != null) {
+                    try {
+                        boolean result = groupService.deleteGroup(Integer.valueOf(groupId));
+                        if (result) return "groups";
+                    } catch (Exception e) {
+                        logger.error("Error to delete group", e);
                     }
-                }catch(Exception ex){
-                    logger.error("Error to delete group",ex);
-                    resp.sendRedirect(req.getContextPath() + "/groups/edit?act=delete&group_id="+groupId+"&result=delErr");
                 }
+                model.addAttribute("result", "delErr");
+                model.addAttribute("act", "delete");
+                model.addAttribute("group_id", groupId);
                 break;
         }
+        return "group_edit";
     }
+
 }
