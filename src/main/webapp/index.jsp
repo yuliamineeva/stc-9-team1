@@ -4,7 +4,8 @@
 <div class="main">
     <div class="main_content">
         <div class="enter">
-            <script>window.location = "/login";</script>
+            <!--<script>window.location = "/login";</script>-->
+            Main Page
         </div>
     </div>
 </div>
