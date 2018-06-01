@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
+<b:beans xmlns:b="http://www.springframework.org/schema/beans"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xmlns="http://www.springframework.org/schema/security"
              xsi:schemaLocation="http://www.springframework.org/schema/beans
@@ -20,16 +20,21 @@
                     password-parameter="j_password"
                     login-page="/login"
                     authentication-failure-url="/login?login_error=t"/>
-        <logout logout-url="/static/j_spring_security_logout"/>
+        <logout logout-url="/j_spring_security_logout"/>
     </http>
 
     <authentication-manager>
-        <authentication-provider>
-            <user-service>
-                <user name="admin" password="1" authorities="ROLE_ADMIN"/>
-                <user name="user" password="1" authorities="ROLE_USER"/>
-            </user-service>
+       <authentication-provider>
+           <password-encoder hash="sha-256"/>
+           <jdbc-user-service data-source-ref="dataSource"
+                               users-by-username-query="select login as username, passw as password, 1 as enabled from users where login=?"
+                               authorities-by-username-query=
+                                      "select login as username,
+                                      (CASE
+                                        WHEN type_id = 3 THEN 'ROLE_ADMIN' ELSE 'ROLE_USER'
+                                      END) as authority
+                                      from users where login =?"/>
         </authentication-provider>
     </authentication-manager>
 
-</beans:beans>
+</b:beans>

@@ -5,16 +5,7 @@
 <%@ include file="aside.jsp" %>
 <div class="main">
     <main class="dashboard">
-        <%if ((Integer) request.getSession().getAttribute("userType") == 3) {%>
-        Страница администратора
-        <%} else { %>
-        Страница пользователя:
-        <%} %>
-        <BR>
-        <div class="user">
-            <BR>
-            <c:out value="${sessionScope.userInfo}"/>
-        </div>
+        dashboard
     </main>
 </div>
 

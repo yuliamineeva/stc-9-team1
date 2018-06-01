@@ -32,7 +32,7 @@ public class UserDAOImpl implements UserDAO {
 
     private void setStatementForAdd(User user, PreparedStatement statement) throws SQLException {
         statement.setString(1, user.getLogin());
-        statement.setString(2, user.getHashPassword());
+        statement.setString(2, user.getPassword());
         statement.setString(3, user.getName());
         statement.setInt(4, user.getType_id());
     }
