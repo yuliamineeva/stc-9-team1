@@ -36,15 +36,15 @@
 
         <c:if test="${act != null && act.equals('delete')}">
             <p align="center">Вы действительно хотите удалить группу с ID=${groupId}?
-            <form name="group_delete" action="${pageContext.request.contextPath}/groups/edit" method="post">
-                <input type="submit" name="submit" value="Delete">
+            <form name="group_delete" action="${pageContext.request.contextPath}/groups/delete" method="post">
+                <input type="submit" value="Удалить">
                 <input type="hidden" name="groupId" value=${groupId}>
             </form>
             </p>
         </c:if>
         <c:if test="${act != null && act.equals('add')}">
             <p align="center">Добавить группу:
-            <form name="group_add" action="${pageContext.request.contextPath}/groups/edit" method="post">
+            <form name="group_add" action="${pageContext.request.contextPath}/groups/add" method="post">
                 <table border="2" align="center" cellspacing="5" cellpadding="13" rules="none">
                     <tr>
                         <td align="left">Введите название группы:</td>
@@ -54,7 +54,7 @@
                     </tr>
                     <tr>
                         <td align="left"><input type="reset" value="Сбросить"></td>
-                        <td align="right"><input type="submit" name="submit" value="Add"></td>
+                        <td align="right"><input type="submit" value="Добавить"></td>
                     </tr>
                 </table>
             </form>
@@ -79,7 +79,7 @@
                     </tr>
                     <tr>
                         <td align="left"><input type="reset" value="Сбросить"></td>
-                        <td align="right"><input type="submit" name="submit" value="Edit"></td>
+                        <td align="right"><input type="submit" value="Редактировать"></td>
                     </tr>
                 </table>
             </form>
