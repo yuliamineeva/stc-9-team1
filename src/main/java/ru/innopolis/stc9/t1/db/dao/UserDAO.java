@@ -2,9 +2,12 @@ package ru.innopolis.stc9.t1.db.dao;
 
 import ru.innopolis.stc9.t1.pojo.User;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public interface UserDAO {
+
+    int addStudent(String login, String hashPass, String name) throws SQLException;
 
     boolean addUser(User user);
 

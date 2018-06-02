@@ -1,8 +1,8 @@
-<%@ page import="org.springframework.security.core.Authentication" %>
-<%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
-<%@ page import="org.springframework.security.core.userdetails.UserDetails" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
+<sec:authentication property="principal.username" var="username"/>
 
 <!DOCTYPE html>
 <html>
@@ -17,28 +17,14 @@
 <body>
 
 <div class="container">
-
     <header class="header">
         <div class="logo">My University - teamOne project</div>
         <div class="logout">
-            <%
-                Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-                if (auth != null) {
-                    Object obj = auth.getPrincipal();
-                    String username = "";
-                    if (obj instanceof UserDetails) {
-                        username = ((UserDetails) obj).getUsername();
-                    } else {
-                        username = obj.toString();
-                    }
-                    request.setAttribute("username", username);
-                }
-            %>
             <c:if test="${username != null}">
                 <c:out value="Вы вошли как: "/>
                 <c:out value="${username}"/>
                 <c:out value="|   "/>
+                <a href="<c:url value='/j_spring_security_logout'/>">Logout</a>
             </c:if>
-            <a href="<c:url value='/j_spring_security_logout'/>">Logout</a>
         </div>
     </header>

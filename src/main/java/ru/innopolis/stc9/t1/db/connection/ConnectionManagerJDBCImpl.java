@@ -30,7 +30,7 @@ public class ConnectionManagerJDBCImpl implements ConnectionManager {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(
-                    "jdbc:mysql://sql7.freesqldatabase.com:3306/sql7239355",
+                    "jdbc:mysql://sql7.freesqldatabase.com:3306/sql7239355?characterEncoding=UTF-8",
                     "sql7239355",
                     "IRMAcXvBY6");
         } catch (ClassNotFoundException e) {
