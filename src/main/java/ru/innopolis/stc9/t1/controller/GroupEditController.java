@@ -14,7 +14,7 @@ public class GroupEditController{
     private final static Logger logger = Logger.getLogger(GroupEditController.class);
     private GroupService groupService = new GroupService();
 
-    @RequestMapping(value = "/groups/edit", method = RequestMethod.GET)
+    @RequestMapping(value = "/groups/manager", method = RequestMethod.GET)
     public String getGroupEditPage(
             @RequestParam(value = "result", required = false) String result,
             @RequestParam(value = "act", required = false) String act,
@@ -28,58 +28,65 @@ public class GroupEditController{
         if (groupId != null) {
             model.addAttribute("groupId", groupId);
         }
-        return "group_edit";
+        return "group_manager";
+    }
+
+    @RequestMapping(value = "/groups/delete", method = RequestMethod.POST)
+    public String processDeleteGroup(
+            @RequestParam(value = "groupId", required = false) String groupId, Model model) {
+
+        if(groupId != null) {
+            try {
+                boolean result = groupService.deleteGroup(Integer.valueOf(groupId));
+                if (result) return "groups";
+            } catch (Exception e) {
+                logger.error("Error to delete group", e);
+            }
+        }
+        model.addAttribute("result", "delErr");
+        model.addAttribute("act", "delete");
+        model.addAttribute("group_id", groupId);
+        return "group_manager";
+    }
+
+    @RequestMapping(value = "/groups/add", method = RequestMethod.POST)
+    public String processAddGroup(
+            @RequestParam(value = "groupName", required = false) String groupName,
+            Model model) {
+
+        if(groupName != null) {
+            Group group = null;
+            try {
+                group = new Group(-1, groupName);
+                boolean result = groupService.addGroup(group);
+                if (result) return "groups";
+            } catch (Exception e) {
+                logger.error("Error to add group", e);
+            }
+        }
+        model.addAttribute("result", "addErr");
+        model.addAttribute("act", "add");
+        return "group_manager";
     }
 
     @RequestMapping(value = "/groups/edit", method = RequestMethod.POST)
-    public String processGroupEditPage(
-            @RequestParam(value = "submit", required = true) String submit,
+    public String processEditGroup(
             @RequestParam(value = "groupName", required = false) String groupName,
             @RequestParam(value = "groupId", required = false) String groupId, Model model) {
-        switch(submit){
-            case "Add":
-                if(groupName != null) {
-                    Group group = null;
-                    try {
-                        group = new Group(-1, groupName);
-                        boolean result = groupService.addGroup(group);
-                        if (result) return "groups";
-                    } catch (Exception e) {
-                        logger.error("Error to add group", e);
-                    }
-                }
-                model.addAttribute("result", "addErr");
-                model.addAttribute("act", "add");
-                break;
-            case "Edit":
-                if(groupName != null && groupId != null) {
-                    try {
-                        Group group = new Group(Integer.valueOf(groupId), groupName);
-                        boolean result = groupService.updateGroup(group);
-                        if (result) return "groups";
-                    } catch (Exception e) {
-                        logger.error("Error to edit group", e);
-                    }
-                }
-                model.addAttribute("result", "editErr");
-                model.addAttribute("act", "edit");
-                model.addAttribute("group_id", groupId);
-                break;
-            case "Delete":
-                if(groupId != null) {
-                    try {
-                        boolean result = groupService.deleteGroup(Integer.valueOf(groupId));
-                        if (result) return "groups";
-                    } catch (Exception e) {
-                        logger.error("Error to delete group", e);
-                    }
-                }
-                model.addAttribute("result", "delErr");
-                model.addAttribute("act", "delete");
-                model.addAttribute("group_id", groupId);
-                break;
+
+        if(groupName != null && groupId != null) {
+            try {
+                Group group = new Group(Integer.valueOf(groupId), groupName);
+                boolean result = groupService.updateGroup(group);
+                if (result) return "groups";
+            } catch (Exception e) {
+                logger.error("Error to edit group", e);
+            }
         }
-        return "group_edit";
+        model.addAttribute("result", "editErr");
+        model.addAttribute("act", "edit");
+        model.addAttribute("group_id", groupId);
+        return "group_manager";
     }
 
 }
