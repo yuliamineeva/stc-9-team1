@@ -21,7 +21,8 @@
                        name='j_password' placeholder="Введите пароль" required><br><br>
                 <button type="submit" value="OK">Вход</button>
             </form>
-
+            <br>
+            <a href="${pageContext.request.contextPath}/registr">Регистрация</a>
         </div>
     </div>
 </div>
