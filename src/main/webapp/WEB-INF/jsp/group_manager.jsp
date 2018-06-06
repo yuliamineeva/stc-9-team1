@@ -1,4 +1,5 @@
 <%@ page import="ru.innopolis.stc9.t1.service.GroupService" %>
+<%@ page import="ru.innopolis.stc9.t1.db.dao.GroupDAOImpl" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -68,9 +69,9 @@
                         <td align="left">Название группы:</td>
                         <td align="left">
                             <%
-                                GroupService groupService = new GroupService();
+                                GroupService groupService = new GroupService(new GroupDAOImpl());
                                 int id = Integer.valueOf((String)request.getAttribute("groupId"));
-                                String strName = groupService.getGrouptById(id).getName();
+                                String strName = groupService.getGroupById(id).getName();
                                 request.setAttribute("groupName", strName);
                             %>
                             <input type="text" name="groupName" size="50" value=${groupName}>

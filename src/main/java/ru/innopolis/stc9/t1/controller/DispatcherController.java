@@ -15,11 +15,6 @@ public class DispatcherController {
     @Autowired
     private UserService userService;
 
-    /*@RequestMapping("/login")
-    public String getLoginPage(Model model) {
-        return "login";
-    }*/
-
     @RequestMapping("/")
     public String getIndexPage(Model model) {
         return "index";
