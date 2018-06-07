@@ -15,6 +15,20 @@ public class UserDAOImpl implements UserDAO {
     private static ConnectionManager connectionManager = ConnectionManagerJDBCImpl.getInstance();
 
     @Override
+    public int addStudent(String login, String hashPass, String name) throws SQLException {
+        int result = -1;
+        try (Connection connection = connectionManager.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "INSERT INTO users (login, passw, fio) VALUES (?, ?, ?)")) {
+            statement.setString(1, login);
+            statement.setString(2, hashPass);
+            statement.setString(3, name);
+            result = statement.executeUpdate();
+        }
+        return result;
+    }
+
+    @Override
     public boolean addUser(User user) {
         Connection connection = connectionManager.getConnection();
         int countRow = 0;

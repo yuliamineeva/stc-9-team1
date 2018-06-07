@@ -4,13 +4,14 @@
 <%@ page import="ru.innopolis.stc9.t1.service.GroupService" %>
 <%@ page import="ru.innopolis.stc9.t1.pojo.Group" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="ru.innopolis.stc9.t1.db.dao.GroupDAOImpl" %>
 
 <%@ include file="header.jsp" %>
 <%@ include file="aside.jsp" %>
 <div class="main">
     <div class="main_content">
         <%
-            GroupService groupService = new GroupService();
+            GroupService groupService = new GroupService(new GroupDAOImpl());
         %>
         <table border="1" cellspacing="0" cellpadding="3" align="center">
             <tr>
