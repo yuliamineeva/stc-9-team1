@@ -30,7 +30,7 @@
                         <c:if test="${group != null}">
                             <tr>
                                 <td>${group.group_id}</td>
-                                <td>${group.name}</td>
+                                <td><a href="${pageContext.request.contextPath}/group_list?groupId=${group.group_id}">${group.name}</a></td>
                                 <td><a href="${pageContext.request.contextPath}/groups/manager?act=edit&groupId=${group.group_id}">Изменить</a></td>
                                 <td><a href="${pageContext.request.contextPath}/groups/manager?act=delete&groupId=${group.group_id}">Удалить</a></td>
                             </tr>
