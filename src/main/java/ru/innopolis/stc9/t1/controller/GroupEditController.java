@@ -6,13 +6,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.innopolis.stc9.t1.db.dao.GroupDAOImpl;
 import ru.innopolis.stc9.t1.pojo.Group;
 import ru.innopolis.stc9.t1.service.GroupService;
 
 @Controller
 public class GroupEditController{
     private final static Logger logger = Logger.getLogger(GroupEditController.class);
-    private GroupService groupService = new GroupService();
+    private GroupService groupService = new GroupService(new GroupDAOImpl());
 
     @RequestMapping(value = "/groups/manager", method = RequestMethod.GET)
     public String getGroupEditPage(
