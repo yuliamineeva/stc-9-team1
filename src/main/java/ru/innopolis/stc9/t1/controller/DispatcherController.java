@@ -16,7 +16,7 @@ public class DispatcherController {
     private UserService userService;
 
     @RequestMapping("/")
-    public String getIndexPage(Model model) {
+    public String getRootPage(Model model) {
         return "index";
     }
 

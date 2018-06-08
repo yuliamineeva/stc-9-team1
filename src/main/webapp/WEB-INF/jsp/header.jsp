@@ -12,6 +12,7 @@
     <meta name="keywords" content="MyUniversity"/>
     <meta name="description" content="test site"/>
     <link rel="stylesheet" type="text/css" href="<c:url value="/resources/style.css"/>"/>
+    <link rel="icon" type="image/x-icon" href="<c:url value="/resources/favicon.ico"/>">
 </head>
 
 <body>
