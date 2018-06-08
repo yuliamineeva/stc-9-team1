@@ -25,6 +25,11 @@ public class DispatcherController {
         return "groups";
     }
 
+    @RequestMapping("/group_list")
+    public String getGroupListPage(Model model) {
+        return "group_list";
+    }
+
     @RequestMapping("/registr")
     public String getRegistrPage() {
         return "registr";
