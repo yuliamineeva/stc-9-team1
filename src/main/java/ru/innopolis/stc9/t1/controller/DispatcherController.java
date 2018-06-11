@@ -16,13 +16,18 @@ public class DispatcherController {
     private UserService userService;
 
     @RequestMapping("/")
-    public String getIndexPage(Model model) {
+    public String getRootPage(Model model) {
         return "index";
     }
 
     @RequestMapping("/groups")
     public String getGroupsPage(Model model) {
         return "groups";
+    }
+
+    @RequestMapping("/group_list")
+    public String getGroupListPage(Model model) {
+        return "group_list";
     }
 
     @RequestMapping("/registr")
