@@ -80,7 +80,8 @@ public class UserDAOImpl implements UserDAO {
                     resultSet.getInt("type_id"),
                     new UserType(
                             resultSet.getInt("type_id"),
-                            resultSet.getString("type_name")));
+                            resultSet.getString("type_name"),
+                            resultSet.getString("role")));
         }
         return user;
     }
