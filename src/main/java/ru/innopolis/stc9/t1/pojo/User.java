@@ -16,19 +16,12 @@ public class User {
     }
 
     public User(int id, String login, String password, String name, int type_id) {
+        this(login, password, name, type_id);
         this.id = id;
-        this.login = login;
-        this.password = password;
-        this.name = name;
-        this.type_id = type_id;
     }
 
     public User(int id, String login, String password, String name, int type_id, UserType userType) {
-        this.id = id;
-        this.login = login;
-        this.password = password;
-        this.name = name;
-        this.type_id = type_id;
+        this(id, login, password, name, type_id);
         this.userType = userType;
     }
 
@@ -55,16 +48,6 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-
-    /*public String getHashPassword() {
-        String hashPassword = null;
-        try {
-            hashPassword = CryptoUtils.byteArrayToHexString(CryptoUtils.computeHash(password));
-        } catch (Exception e) {
-            logger.error("Error trying to get hashpassword", e);
-        }
-        return hashPassword;
-    }*/
 
     public String getName() {
         return name;

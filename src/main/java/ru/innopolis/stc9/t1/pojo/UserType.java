@@ -3,10 +3,12 @@ package ru.innopolis.stc9.t1.pojo;
 public class UserType {
     private int id;
     private String type_name;
+    private String role;
 
-    public UserType(int id, String type_name) {
+    public UserType(int id, String type_name, String role) {
         this.id = id;
         this.type_name = type_name;
+        this.role = role;
     }
 
     public UserType(String type_name) {
@@ -29,12 +31,20 @@ public class UserType {
         this.type_name = type_name;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     @Override
     public String toString() {
         return "UserType{" +
-                "id= " + id +
-                ", type_name= " + type_name +
+                "id=" + id +
+                ", type_name='" + type_name + '\'' +
+                ", role='" + role + '\'' +
                 '}';
     }
 }
