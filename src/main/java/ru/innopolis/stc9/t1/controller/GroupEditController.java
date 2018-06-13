@@ -46,7 +46,7 @@ public class GroupEditController{
         }
         model.addAttribute("result", "delErr");
         model.addAttribute("act", "delete");
-        model.addAttribute("group_id", groupId);
+        model.addAttribute("groupId", groupId);
         return "group_manager";
     }
 
