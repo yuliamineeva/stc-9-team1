@@ -1,5 +1,6 @@
 package ru.innopolis.stc9.t1.service;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import ru.innopolis.stc9.t1.db.connection.CryptoUtils;
 import ru.innopolis.stc9.t1.db.dao.UserDAO;
@@ -10,10 +11,25 @@ import java.sql.SQLException;
 
 @Service
 public class UserService {
-    private static UserDAO userDao = new UserDAOImpl();
+    private final static Logger logger = Logger.getLogger(UserService.class);
+    private UserDAO userDao;
 
-    public int addStudent(String login, String pass, String name) throws SQLException {
-        return userDao.addStudent(login, CryptoUtils.computeHashPassword(pass), name);
+    public UserService() {
+        userDao = new UserDAOImpl();
+    }
+
+    public UserService(UserDAO userDao) {
+        this.userDao = userDao;
+    }
+
+    public int addStudent(String login, String pass, String name) {
+        int result = -1;
+        try {
+            result = userDao.addStudent(login, CryptoUtils.computeHashPassword(pass), name);
+        } catch (SQLException e) {
+            logger.error("Error trying to add Student to DB", e);
+        }
+        return result;
     }
 
     public User getUserByLogin(String login) {
@@ -23,7 +39,10 @@ public class UserService {
 
     public boolean checkAuth(String login, String password) {
         User user = userDao.getUserByLogin(login);
-        String passwordFromBD = user.getPassword();
+        String passwordFromBD = null;
+        if (user != null) {
+            passwordFromBD = user.getPassword();
+        }
         String hashPassword = CryptoUtils.computeHashPassword(password);
         return (user != null) && (passwordFromBD.equals(hashPassword));
     }

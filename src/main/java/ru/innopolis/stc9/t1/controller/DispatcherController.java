@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.innopolis.stc9.t1.service.UserService;
 
-import java.sql.SQLException;
-
 @Controller
 public class DispatcherController {
     @Autowired
@@ -44,16 +42,12 @@ public class DispatcherController {
         } else if (password.isEmpty()) {
             result = "password is empty";
         } else {
-            try {
                 int addRowCount = userService.addStudent(login, password, name);
                 if (addRowCount == 1) {
                     result = "user " + login + " has been registered, you can login";
                 } else {
                     result = "error: added " + addRowCount + " rows";
                 }
-            } catch (SQLException e) {
-                result = e.toString();
-            }
         }
         return result;
     }
@@ -68,8 +62,6 @@ public class DispatcherController {
     public String getProfilePage(@RequestParam(value = "editProfile", required = false) String editProfile,
                                  @RequestParam(value = "errorProfile", required = false) String errorProfile,
                                  Model model) {
-
-
         return "profile";
     }
 

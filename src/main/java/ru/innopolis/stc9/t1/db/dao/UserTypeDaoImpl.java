@@ -51,7 +51,8 @@ public class UserTypeDaoImpl implements UserTypeDAO {
         if (resultSet.next()) {
             userType = new UserType(
                     resultSet.getInt("type_id"),
-                    resultSet.getString("type_name"));
+                    resultSet.getString("type_name"),
+                    resultSet.getString("role"));
         }
         return userType;
     }
@@ -78,7 +79,8 @@ public class UserTypeDaoImpl implements UserTypeDAO {
         while (resultSet.next()) {
             userType = new UserType(
                     resultSet.getInt("type_id"),
-                    resultSet.getString("type_name"));
+                    resultSet.getString("type_name"),
+                    resultSet.getString("role"));
             userTypes.add(userType);
         }
         return userTypes;
