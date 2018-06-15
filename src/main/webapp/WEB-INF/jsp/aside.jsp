@@ -4,22 +4,14 @@
 
 <div class="sidebar">
 
-    <c:choose>
-        <c:when test="${username == null}">
-            <div style="text-align: center; font-weight: bold">
-                Welcome
-            </div>
-        </c:when>
-        <c:otherwise>
-            <p><b>МЕНЮ:</b></p>
-        </c:otherwise>
-    </c:choose>
+    <c:if test="${username == null}">
+        <div style="text-align: center; font-weight: bold">
+            Welcome
+        </div>
+    </c:if>
 
-    <%--<sec:authorize access="isAuthenticated()">
+    <sec:authorize access="isAuthenticated()">
         <p><b>МЕНЮ:</b></p>
-    </sec:authorize>--%>
-
-    <sec:authorize access="hasAnyRole('ROLE_TEACHER', 'ROLE_USER')">
         <ul>
             <li><a href="${pageContext.request.contextPath}/user/profile">Профиль</a></li>
             <br>
@@ -27,18 +19,12 @@
             <br>
             <li><a href="${pageContext.request.contextPath}/ToDo3">Меню 3</a></li>
             <br>
+            <sec:authorize access="hasRole('ROLE_ADMIN')">
+                <li><a href="${pageContext.request.contextPath}/admin/userlist">Список пользователей</a></li>
+                <br>
+            </sec:authorize>
         </ul>
     </sec:authorize>
 
-    <sec:authorize access="hasRole('ROLE_ADMIN')">
-        <ul>
-            <li><a href="${pageContext.request.contextPath}/admin/userlist">Список пользователей</a></li>
-            <br>
-            <li><a href="${pageContext.request.contextPath}/groups">Группы</a></li>
-            <br>
-            <li><a href="${pageContext.request.contextPath}/ToDo3">Меню 3</a></li>
-            <br>
-        </ul>
-    </sec:authorize>
 
 </div>

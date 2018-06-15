@@ -7,7 +7,7 @@
         <div class="registr_block">
             <a href="${pageContext.request.contextPath}/login">войти</a>
         </div>
-        <form action="${pageContext.request.contextPath}/registr" method="post">
+        <form action="${pageContext.request.contextPath}/registration" method="post">
             <div class="registr_table">
                 <div style="text-align: center">
                     Регистрация
@@ -16,19 +16,19 @@
                     <div class="row">
                         <div class="cell" style="text-align: right">логин</div>
                         <div class="cell">
-                            <input type="text" name="userLogin" style="min-width: 200px">
+                            <input type="text" name="userLogin" style="min-width: 200px" required autofocus>
                         </div>
                     </div>
                     <div class="row">
                         <div class="cell" style="text-align: right">имя</div>
                         <div class="cell">
-                            <input type="text" name="userName" style="min-width: 200px">
+                            <input type="text" name="userName" style="min-width: 200px" required>
                         </div>
                     </div>
                     <div class="row">
                         <div class="cell" style="text-align: right">пароль</div>
                         <div class="cell">
-                            <input type="password" maxlength="25" name="userPassword" style="min-width: 200px">
+                            <input type="password" maxlength="25" name="userPassword" style="min-width: 200px" required>
                         </div>
                     </div>
                 </div>
@@ -38,7 +38,10 @@
             </div>
         </form>
         <div class="registr_block" style="color: red">
-            <c:out value="${RegistrReply}" default=""/>
+            <c:out value="${err}" default=""/>
+        </div>
+        <div class="registr_block">
+            <c:out value="${reply}" default=""/>
         </div>
     </div>
 </div>

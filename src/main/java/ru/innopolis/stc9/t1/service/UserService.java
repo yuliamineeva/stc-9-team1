@@ -2,12 +2,14 @@ package ru.innopolis.stc9.t1.service;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
+import ru.innopolis.stc9.t1.ErrorMsgHandler;
 import ru.innopolis.stc9.t1.db.connection.CryptoUtils;
 import ru.innopolis.stc9.t1.db.dao.UserDAO;
 import ru.innopolis.stc9.t1.db.dao.UserDAOImpl;
 import ru.innopolis.stc9.t1.pojo.User;
 
 import java.sql.SQLException;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -22,14 +24,15 @@ public class UserService {
         this.userDao = userDao;
     }
 
-    public int addStudent(String login, String pass, String name) {
-        int result = -1;
+    public void addStudent(String login, String pass, String name) {
         try {
-            result = userDao.addStudent(login, CryptoUtils.computeHashPassword(pass), name);
+            int addRowCount = userDao.addStudent(login, CryptoUtils.computeHashPassword(pass), name);
+            if (addRowCount != 1) {
+                ErrorMsgHandler.setMessage("error: added " + addRowCount + " rows");
+            }
         } catch (SQLException e) {
-            logger.error("Error trying to add Student to DB", e);
+            ErrorMsgHandler.setMessage("Error trying to add Student to DB", e);
         }
-        return result;
     }
 
     public User getUserByLogin(String login) {
@@ -59,5 +62,15 @@ public class UserService {
             userInfo = user.toString();
         }
         return userInfo;
+    }
+
+    public List<User> getAllUsers() {
+        List<User> users = null;
+        try {
+            users = userDao.getAllUsers();
+        } catch (SQLException e) {
+            ErrorMsgHandler.setMessage("Error trying to get all users from DB", e);
+        }
+        return users;
     }
 }

@@ -22,7 +22,7 @@
                 <button type="submit" value="OK">Вход</button>
             </form>
             <br>
-            <a href="${pageContext.request.contextPath}/registr">Регистрация</a>
+            <a href="${pageContext.request.contextPath}/registration">Регистрация</a>
         </div>
     </div>
 </div>

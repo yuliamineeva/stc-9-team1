@@ -13,6 +13,7 @@ public class User {
         this.password = password;
         this.name = name;
         this.type_id = type_id;
+        this.userType = new UserType(type_id);
     }
 
     public User(int id, String login, String password, String name, int type_id) {

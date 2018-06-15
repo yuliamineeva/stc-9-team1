@@ -138,17 +138,12 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public List<User> getAllUsers() {
-        Connection connection = connectionManager.getConnection();
-        List<User> users = null;
-        try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * " +
-                    "FROM users");
+    public List<User> getAllUsers() throws SQLException {
+        List<User> users;
+        try (Connection connection = connectionManager.getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery("SELECT * FROM users");) {
             users = getUserlistFromResultset(resultSet);
-            connection.close();
-        } catch (SQLException e) {
-            logger.error("Error trying to get All Users from DB", e);
         }
         return users;
     }
