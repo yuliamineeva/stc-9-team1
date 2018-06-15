@@ -14,6 +14,10 @@ public class GroupListService {
         this.groupListDAO = groupListDAO;
     }
 
+    public boolean deleteUserFromGroup(int group_id, int user_id){
+        return groupListDAO.deleteUserFromGroup(group_id, user_id);
+    }
+
     public ArrayList<User> getGroupList(int group_id){
         return groupListDAO.getGroupList(group_id);
     }

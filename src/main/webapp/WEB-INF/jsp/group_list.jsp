@@ -23,6 +23,7 @@
             <%
                 String paramGroupId = request.getParameter("groupId");
                 int groupId = Integer.valueOf(paramGroupId);
+                request.setAttribute("groupId", groupId);
                 ArrayList<User> arrayGroupList = groupListService.getGroupList(groupId);
                 request.setAttribute("arrayGroupList", arrayGroupList);
             %>
@@ -32,7 +33,7 @@
                         <tr>
                             <td>${user.id}</td>
                             <td>${user.name}</td>
-                            <td><a href="${pageContext.request.contextPath}/todo">Удалить из группы</a></td>
+                            <td><a href="${pageContext.request.contextPath}/group_list/manager?act=delete&groupId=${groupId}&userId=${user.id}">Удалить из группы</a></td>
                         </tr>
                     </c:if>
                 </c:forEach>
