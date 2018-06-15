@@ -7,4 +7,5 @@ import java.util.ArrayList;
 public interface GroupListDAO {
     boolean deleteUserFromGroup(int group_id, int user_id);
     ArrayList<User> getGroupList(int group_id);
+    boolean addUserToGroup(int group_id, int user_id);
 }
