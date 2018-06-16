@@ -153,6 +153,23 @@ public class UserDAOImpl implements UserDAO {
         return users;
     }
 
+    public List<User> getAllUsersNotInGroup(int group_id){
+        Connection connection = connectionManager.getConnection();
+        List<User> users = null;
+        String sqlRequest = "SELECT * FROM users u " +
+                            "WHERE NOT EXISTS(select g.list_id from group_list g where g.user_id = u.user_id and g.group_id = ?)";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sqlRequest);
+            statement.setInt(1, group_id);
+            ResultSet resultSet = statement.executeQuery();
+            users = getUserlistFromResultset(resultSet);
+            connection.close();
+        } catch (SQLException e) {
+            logger.error("Error trying to get All Users not in group from DB", e);
+        }
+        return users;
+    }
+
     @Override
     public boolean updateUser(User user) {
         Connection connection = connectionManager.getConnection();

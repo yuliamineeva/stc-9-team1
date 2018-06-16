@@ -15,7 +15,7 @@ public class GroupListEditController {
     private GroupListService groupListService = new GroupListService(new GroupListDAOImpl());
 
     @RequestMapping(value = "/group_list/manager", method = RequestMethod.GET)
-    public String getGroupEditPage(
+    public String getGroupListEditPage(
             @RequestParam(value = "result", required = false) String result,
             @RequestParam(value = "act", required = false) String act,
             @RequestParam(value = "groupId", required = false) String groupId,
@@ -36,7 +36,7 @@ public class GroupListEditController {
     }
 
     @RequestMapping(value = "/group_list/delete", method = RequestMethod.POST)
-    public String processDeleteGroup(
+    public String deleteUserFromGroup(
             @RequestParam(value = "groupId", required = false) String groupId,
             @RequestParam(value = "userId", required = false) String userId, Model model) {
 
@@ -50,6 +50,27 @@ public class GroupListEditController {
         }
         model.addAttribute("result", "delErr");
         model.addAttribute("act", "delete");
+        model.addAttribute("groupId", groupId);
+        model.addAttribute("userId", userId);
+        return "group_list_manager";
+    }
+
+    @RequestMapping(value = "/group_list/add", method = RequestMethod.GET)
+    public String addUserToGroup(
+            @RequestParam(value = "result", required = false) String result,
+            @RequestParam(value = "groupId", required = false) String groupId,
+            @RequestParam(value = "userId", required = false) String userId, Model model) {
+
+        if(groupId != null && userId != null) {
+            try {
+                boolean resultAdd = groupListService.addUserToGroup(Integer.valueOf(groupId), Integer.valueOf(userId));
+                if (resultAdd) return "group_list";
+            } catch (Exception e) {
+                logger.error("Error to add user in group", e);
+            }
+        }
+        model.addAttribute("result", "addErr");
+        model.addAttribute("act", "add");
         model.addAttribute("groupId", groupId);
         model.addAttribute("userId", userId);
         return "group_list_manager";

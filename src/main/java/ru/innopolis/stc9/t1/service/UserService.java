@@ -8,6 +8,7 @@ import ru.innopolis.stc9.t1.db.dao.UserDAOImpl;
 import ru.innopolis.stc9.t1.pojo.User;
 
 import java.sql.SQLException;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -59,5 +60,10 @@ public class UserService {
             userInfo = user.toString();
         }
         return userInfo;
+    }
+
+    public List<User> getAllUsersNotInGroup(int group_id){
+        List<User> users = userDao.getAllUsersNotInGroup(group_id);
+        return users;
     }
 }
