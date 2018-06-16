@@ -45,7 +45,7 @@
             </c:if>
         </table>
         <p align="center">
-            <a href="${pageContext.request.contextPath}/todo">Добавить пользователя в группу</a>
+            <a href="${pageContext.request.contextPath}/group_list/manager?act=add&groupId=${groupId}">Добавить пользователя в группу</a>
         </p>
     </div>
 </div>

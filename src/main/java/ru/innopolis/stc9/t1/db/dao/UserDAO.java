@@ -19,6 +19,8 @@ public interface UserDAO {
 
     List<User> getAllUsers();
 
+    List<User> getAllUsersNotInGroup(int group_id);
+
     boolean updateUser(User user);
 
     boolean deleteUserById(int id);

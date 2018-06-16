@@ -57,4 +57,20 @@ public class GroupListDAOImpl implements GroupListDAO {
         return users;
     }
 
+    public boolean addUserToGroup(int group_id, int user_id){
+        String sqlRequest = "INSERT INTO group_list (group_id, user_id) VALUES(?, ?)";
+        int result = 0;
+        Connection connection = connectionManager.getConnection();
+        try{
+            PreparedStatement statement = connection.prepareStatement(sqlRequest);
+            statement.setInt(1, group_id);
+            statement.setInt(2, user_id);
+            result = statement.executeUpdate();
+            connection.close();
+        }catch (SQLException ex) {
+            logger.error("Error adding user to group",ex);
+            return false;
+        }
+        return (result>0);
+    }
 }

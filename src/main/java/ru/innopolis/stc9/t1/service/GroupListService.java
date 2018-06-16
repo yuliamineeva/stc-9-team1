@@ -21,4 +21,8 @@ public class GroupListService {
     public ArrayList<User> getGroupList(int group_id){
         return groupListDAO.getGroupList(group_id);
     }
+
+    public boolean addUserToGroup(int group_id, int user_id){
+        return groupListDAO.addUserToGroup(group_id, user_id);
+    }
 }
