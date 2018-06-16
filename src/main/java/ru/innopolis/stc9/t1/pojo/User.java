@@ -8,11 +8,20 @@ public class User {
     private int type_id;
     private UserType userType;
 
+    public User(int id, String login, String name, int type_id) {
+        this.id = id;
+        this.login = login;
+        this.name = name;
+        this.type_id = type_id;
+        this.userType = new UserType(type_id);
+    }
+
     public User(String login, String password, String name, int type_id) {
         this.login = login;
         this.password = password;
         this.name = name;
         this.type_id = type_id;
+        this.userType = new UserType(type_id);
     }
 
     public User(int id, String login, String password, String name, int type_id) {
@@ -63,6 +72,7 @@ public class User {
 
     public void setType_id(int type_id) {
         this.type_id = type_id;
+        this.userType = new UserType(type_id);
     }
 
     public UserType getUserType() {
@@ -72,7 +82,6 @@ public class User {
     public void setUserType(UserType userType) {
         this.userType = userType;
     }
-
 
     @Override
     public String toString() {

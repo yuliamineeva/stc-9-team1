@@ -8,7 +8,7 @@
 	http://www.springframework.org/schema/security/spring-security-4.2.xsd">
 
     <http pattern="/login" security="none"/>
-    <http pattern="/registr" security="none"/>
+    <http pattern="/registration" security="none"/>
     <http pattern="/resources/**" security="none"/>
 
     <http auto-config="true">
@@ -34,8 +34,15 @@
                                users-by-username-query=
                                        "SELECT login, passw, 'true' AS enabled FROM users WHERE login=?"
                                authorities-by-username-query=
-                                       "SELECT login, role FROM users, user_types
-                                        WHERE users.type_id=user_types.type_id AND login =?"/>
+                                       "SELECT login, CASE type_id
+                                            WHEN 1 THEN 'ROLE_TEACHER'
+                                            WHEN 2 THEN 'ROLE_USER'
+                                            WHEN 3 THEN 'ROLE_ADMIN'
+                                            END
+                                        FROM users WHERE login=?"/>
+            <!--authorities-by-username-query=
+            "SELECT login, role FROM users, user_types
+            WHERE users.type_id=user_types.type_id AND login =?"-->
         </authentication-provider>
     </authentication-manager>
 
