@@ -8,7 +8,11 @@ public class Lesson {
     private int group_id;
     private String topic;
     private Date date;
+    private String tutor_name;
+    private String group_name;
 
+    public Lesson() {
+    }
 
     public Lesson(int tutor_id, int group_id, String topic, Date date) {
         this.tutor_id = tutor_id;
@@ -20,6 +24,12 @@ public class Lesson {
     public Lesson(int lsn_id, int tutor_id, int group_id, String topic, Date date) {
         this(tutor_id, group_id, topic, date);
         this.lsn_id = lsn_id;
+    }
+
+    public Lesson(int lsn_id, int tutor_id, int group_id, String topic, Date date, String tutor_name, String group_name) {
+        this(lsn_id, tutor_id, group_id, topic, date);
+        this.tutor_name = tutor_name;
+        this.group_name = group_name;
     }
 
     public int getLsn_id() {
@@ -62,6 +72,22 @@ public class Lesson {
         this.date = date;
     }
 
+    public String getTutor_name() {
+        return tutor_name;
+    }
+
+    public void setTutor_name(String tutor_name) {
+        this.tutor_name = tutor_name;
+    }
+
+    public String getGroup_name() {
+        return group_name;
+    }
+
+    public void setGroup_name(String group_name) {
+        this.group_name = group_name;
+    }
+
     @Override
     public String toString() {
         return "Lesson{" +
@@ -70,6 +96,9 @@ public class Lesson {
                 ", group_id=" + group_id +
                 ", topic='" + topic + '\'' +
                 ", date=" + date +
+                ", tutor_name='" + tutor_name + '\'' +
+                ", group_name='" + group_name + '\'' +
                 '}';
     }
+
 }

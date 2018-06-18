@@ -7,6 +7,7 @@ import ru.innopolis.stc9.t1.pojo.Lesson;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -40,7 +41,37 @@ public class LessonDAOImpl implements LessonDAO {
 
     @Override
     public Lesson getLessonById(int id) {
-        return null;
+        Connection connection = connectionManager.getConnection();
+        Lesson lesson = null;
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT * " +
+                    "FROM lessons INNER JOIN users ON lessons.tutor_id = users.user_id " +
+                    "INNER JOIN groups ON lessons.group_id = groups.group_id " +
+                    "WHERE lessons.lsn_id = ?");
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            lesson = getLessonFromResultset(resultSet);
+            connection.close();
+        } catch (SQLException e) {
+            logger.error("Error trying to get lesson by ID from DB", e);
+        }
+        return lesson;
+    }
+
+    private Lesson getLessonFromResultset(ResultSet resultSet) throws SQLException {
+        if (resultSet == null) return null;
+        Lesson lesson = null;
+        if (resultSet.next()) {
+            lesson = new Lesson(
+                    resultSet.getInt("lsn_id"),
+                    resultSet.getInt("tutor_id"),
+                    resultSet.getInt("group_id"),
+                    resultSet.getString("topic"),
+                    resultSet.getDate("date"),
+                    resultSet.getString("fio"),
+                    resultSet.getString("name"));
+        }
+        return lesson;
     }
 
     @Override
