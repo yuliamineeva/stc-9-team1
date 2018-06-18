@@ -16,19 +16,20 @@
                     <div class="row">
                         <div class="cell" style="text-align: right">логин</div>
                         <div class="cell">
-                            <input type="text" name="userLogin" style="min-width: 200px" required autofocus>
+                            <input type="text" name="userLogin" maxlength="20" style="min-width: 200px" required
+                                   autofocus>
                         </div>
                     </div>
                     <div class="row">
                         <div class="cell" style="text-align: right">имя</div>
                         <div class="cell">
-                            <input type="text" name="userName" style="min-width: 200px" required>
+                            <input type="text" name="userName" maxlength="150" style="min-width: 200px" required>
                         </div>
                     </div>
                     <div class="row">
                         <div class="cell" style="text-align: right">пароль</div>
                         <div class="cell">
-                            <input type="password" maxlength="25" name="userPassword" style="min-width: 200px" required>
+                            <input type="password" name="userPassword" maxlength="50" style="min-width: 200px" required>
                         </div>
                     </div>
                 </div>

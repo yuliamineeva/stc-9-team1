@@ -13,7 +13,7 @@
     <sec:authorize access="isAuthenticated()">
         <p><b>МЕНЮ:</b></p>
         <ul>
-            <li><a href="${pageContext.request.contextPath}/user/profile">Профиль (в разработке)</a></li>
+            <li><a href="${pageContext.request.contextPath}/profile">Профиль</a></li>
             <br>
             <li><a href="${pageContext.request.contextPath}/groups">Группы</a></li>
             <br>

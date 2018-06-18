@@ -59,11 +59,38 @@ public class UserController {
         return "registration";
     }
 
-    @RequestMapping(value = "**/profile", method = RequestMethod.GET)
-    public String getProfile(@RequestParam(value = "editProfile", required = false) String editProfile,
-                             @RequestParam(value = "errorProfile", required = false) String errorProfile,
-                             Model model) {
+    @RequestMapping(value = "/profile", method = RequestMethod.GET)
+    public String getProfile(Model model) {
+        String currentUserLogin = SecurityContextHolder.getContext().getAuthentication().getName();
+        User currentUser = userService.getUserByLogin(currentUserLogin);
+        model.addAttribute("user", currentUser);
         return "users/profile";
+    }
+
+    @RequestMapping(value = "/profileChangeName", method = RequestMethod.POST)
+    public String setProfileChangeName(@RequestParam String newName, Model model) {
+        String currentUserLogin = SecurityContextHolder.getContext().getAuthentication().getName();
+        userService.updateUserNameByLogin(currentUserLogin, newName);
+        String errorEditUser = ErrorMsgHandler.getMessage();
+        boolean nameChanged = (errorEditUser == null);
+        model.addAttribute("errorEditUser", errorEditUser);
+        model.addAttribute("nameChanged", nameChanged);
+        return getProfile(model);
+    }
+
+    @RequestMapping(value = "/profileChangePass", method = RequestMethod.POST)
+    public String setProfileChangePass(@RequestParam String newPass, Model model) {
+        String currentUserLogin = SecurityContextHolder.getContext().getAuthentication().getName();
+        userService.updateUserPasswordByLogin(currentUserLogin, newPass);
+        String errorEditUser = ErrorMsgHandler.getMessage();
+        if (errorEditUser != null) {
+            model.addAttribute("errorEditUser", errorEditUser);
+            return getProfile(model);
+        } else {
+            SecurityContextHolder.clearContext();
+            model.addAttribute("passChanged", true);
+            return "login";
+        }
     }
 
     @RequestMapping("admin/userList")
@@ -78,8 +105,8 @@ public class UserController {
     @RequestMapping(value = "/admin/userList/editRole", method = RequestMethod.GET)
     public String getEditRole(@RequestParam int id, String login, String name, int roleId, Model model) {
         User editableUser = new User(id, login, name, roleId);
-        String CurrentUserLogin = SecurityContextHolder.getContext().getAuthentication().getName();
-        boolean himself = CurrentUserLogin.equals(login);
+        String currentUserLogin = SecurityContextHolder.getContext().getAuthentication().getName();
+        boolean himself = currentUserLogin.equals(login);
         model.addAttribute("himself", himself);
         model.addAttribute("user", editableUser);
         return "users/userEditRole";
@@ -97,8 +124,8 @@ public class UserController {
     @RequestMapping(value = "/admin/userList/deleteUser", method = RequestMethod.GET)
     public String getDeleteUser(@RequestParam int id, String login, String name, int roleId, Model model) {
         User deletedUser = new User(id, login, name, roleId);
-        String CurrentUserLogin = SecurityContextHolder.getContext().getAuthentication().getName();
-        boolean himself = CurrentUserLogin.equals(login);
+        String currentUserLogin = SecurityContextHolder.getContext().getAuthentication().getName();
+        boolean himself = currentUserLogin.equals(login);
         model.addAttribute("himself", himself);
         model.addAttribute("user", deletedUser);
         return "users/userDelete";

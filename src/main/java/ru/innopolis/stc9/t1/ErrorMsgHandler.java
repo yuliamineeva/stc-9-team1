@@ -14,11 +14,11 @@ public class ErrorMsgHandler {
 
     public static void setMessage(String description) {
         logger.error(description);
-        ErrorMsgHandler.message = description;
+        message = description;
     }
 
     public static void setMessage(String description, Throwable error) {
         logger.error(description, error);
-        ErrorMsgHandler.message = description + ": " + error;
+        message = description + ": " + error;
     }
 }
