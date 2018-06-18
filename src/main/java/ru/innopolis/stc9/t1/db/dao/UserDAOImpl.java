@@ -14,6 +14,7 @@ public class UserDAOImpl implements UserDAO {
     private final static Logger logger = Logger.getLogger(UserDAOImpl.class);
     private static ConnectionManager connectionManager = ConnectionManagerJDBCImpl.getInstance();
 
+    // insert -------
     @Override
     public int addStudent(String login, String hashPass, String name) throws SQLException {
         int result;
@@ -51,6 +52,7 @@ public class UserDAOImpl implements UserDAO {
         statement.setInt(4, user.getType_id());
     }
 
+    // select --------
     @Override
     public User getUserById(int id) {
         Connection connection = connectionManager.getConnection();
@@ -85,7 +87,6 @@ public class UserDAOImpl implements UserDAO {
         }
         return user;
     }
-
 
     @Override
     public User getUserByLogin(String login) {
@@ -165,6 +166,20 @@ public class UserDAOImpl implements UserDAO {
         return users;
     }
 
+    // delete -------
+    @Override
+    public int deleteUserById(int id) throws SQLException {
+        int result;
+        try (Connection connection = connectionManager.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "DELETE FROM users WHERE user_id = ?");) {
+            statement.setInt(1, id);
+            result = statement.executeUpdate();
+        }
+        return result;
+    }
+
+    // update -------
     @Override
     public boolean updateUser(User user) {
         Connection connection = connectionManager.getConnection();
@@ -187,18 +202,6 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public int deleteUserById(int id) throws SQLException {
-        int result;
-        try (Connection connection = connectionManager.getConnection();
-             PreparedStatement statement = connection.prepareStatement(
-                     "DELETE FROM users WHERE user_id = ?");) {
-            statement.setInt(1, id);
-            result = statement.executeUpdate();
-        }
-        return result;
-    }
-
-    @Override
     public int updateUserRole(int id, int roleId) throws SQLException {
         int result;
         try (Connection connection = connectionManager.getConnection();
@@ -206,6 +209,32 @@ public class UserDAOImpl implements UserDAO {
                      "UPDATE users SET type_id =? WHERE user_id =?")) {
             statement.setInt(1, roleId);
             statement.setInt(2, id);
+            result = statement.executeUpdate();
+        }
+        return result;
+    }
+
+    @Override
+    public int updateUserNameByLogin(String login, String name) throws SQLException {
+        int result;
+        try (Connection connection = connectionManager.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "UPDATE users SET fio =? WHERE login =?")) {
+            statement.setString(1, name);
+            statement.setString(2, login);
+            result = statement.executeUpdate();
+        }
+        return result;
+    }
+
+    @Override
+    public int updateUserPasswordByLogin(String login, String hashPassword) throws SQLException {
+        int result;
+        try (Connection connection = connectionManager.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "UPDATE users SET passw =? WHERE login =?")) {
+            statement.setString(1, hashPassword);
+            statement.setString(2, login);
             result = statement.executeUpdate();
         }
         return result;

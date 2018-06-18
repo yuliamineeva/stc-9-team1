@@ -5,6 +5,13 @@
 
 <div class="main">
     <div class="main_content">
+
+        <c:if test="${passChanged}">
+            <div style="text-align: center;">
+                пароль был изменен
+            </div>
+        </c:if>
+
         <div class="login">
             <c:if test="${login_error != null}">
                 <div style="color: Red;">

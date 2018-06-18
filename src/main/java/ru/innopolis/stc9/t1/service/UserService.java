@@ -24,6 +24,17 @@ public class UserService {
         this.userDao = userDao;
     }
 
+    public boolean checkAuth(String login, String password) {
+        User user = userDao.getUserByLogin(login);
+        String passwordFromBD = null;
+        if (user != null) {
+            passwordFromBD = user.getPassword();
+        }
+        String hashPassword = CryptoUtils.computeHashPassword(password);
+        return (user != null) && (passwordFromBD.equals(hashPassword));
+    }
+
+    // insert ---------
     public void addStudent(String login, String pass, String name) {
         try {
             int addRowCount = userDao.addStudent(login, CryptoUtils.computeHashPassword(pass), name);
@@ -35,19 +46,10 @@ public class UserService {
         }
     }
 
+    // select -----------
     public User getUserByLogin(String login) {
         User user = userDao.getUserByLogin(login);
         return user;
-    }
-
-    public boolean checkAuth(String login, String password) {
-        User user = userDao.getUserByLogin(login);
-        String passwordFromBD = null;
-        if (user != null) {
-            passwordFromBD = user.getPassword();
-        }
-        String hashPassword = CryptoUtils.computeHashPassword(password);
-        return (user != null) && (passwordFromBD.equals(hashPassword));
     }
 
     public int getUserType(String login) {
@@ -79,6 +81,19 @@ public class UserService {
         return users;
     }
 
+    // delete ----------
+    public void deleteUserById(int id) {
+        try {
+            int deleteRowCount = userDao.deleteUserById(id);
+            if (deleteRowCount != 1) {
+                ErrorMsgHandler.setMessage("DB error, deleting user, delete " + deleteRowCount + " rows");
+            }
+        } catch (SQLException e) {
+            ErrorMsgHandler.setMessage("DB error, deleting user", e);
+        }
+    }
+
+    // update ---------
     public void updateUserRole(int id, int roleId) {
         try {
             int updateRowCount = userDao.updateUserRole(id, roleId);
@@ -90,14 +105,28 @@ public class UserService {
         }
     }
 
-    public void deleteUserById(int id) {
+    public void updateUserNameByLogin(String login, String name) {
         try {
-            int deleteRowCount = userDao.deleteUserById(id);
-            if (deleteRowCount != 1) {
-                ErrorMsgHandler.setMessage("DB error, deleting user, delete " + deleteRowCount + " rows");
+            int updateRowCount = userDao.updateUserNameByLogin(login, name);
+            if (updateRowCount != 1) {
+                ErrorMsgHandler.setMessage("DB error, updating user name, update " + updateRowCount + " rows");
             }
         } catch (SQLException e) {
-            ErrorMsgHandler.setMessage("DB error, deleting user", e);
+            ErrorMsgHandler.setMessage("DB error, updating user name", e);
         }
     }
+
+    public void updateUserPasswordByLogin(String login, String password) {
+        String hashPassword = CryptoUtils.computeHashPassword(password);
+        try {
+            int updateRowCount = userDao.updateUserPasswordByLogin(login, hashPassword);
+            if (updateRowCount != 1) {
+                ErrorMsgHandler.setMessage("DB error, updating user password, update " + updateRowCount + " rows");
+            }
+        } catch (SQLException e) {
+            ErrorMsgHandler.setMessage("DB error, updating user password", e);
+        }
+    }
+
+
 }

@@ -26,4 +26,9 @@ public class DispatcherController {
         return "registration";
     }
 
+    @RequestMapping("/lessons")
+    public String getLessonsPage(Model model) {
+        return "lessons";
+    }
+
 }

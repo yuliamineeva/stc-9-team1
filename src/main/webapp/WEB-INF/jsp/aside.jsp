@@ -13,11 +13,11 @@
     <sec:authorize access="isAuthenticated()">
         <p><b>МЕНЮ:</b></p>
         <ul>
-            <li><a href="${pageContext.request.contextPath}/user/profile">Профиль (в разработке)</a></li>
+            <li><a href="${pageContext.request.contextPath}/profile">Профиль</a></li>
             <br>
             <li><a href="${pageContext.request.contextPath}/groups">Группы</a></li>
             <br>
-            <li><a href="${pageContext.request.contextPath}/ToDo3">Меню 3</a></li>
+            <li><a href="${pageContext.request.contextPath}/lessons">Лекции</a></li>
             <br>
             <sec:authorize access="hasRole('ROLE_ADMIN')">
                 <li><a href="${pageContext.request.contextPath}/admin/userList">Список пользователей</a></li>
