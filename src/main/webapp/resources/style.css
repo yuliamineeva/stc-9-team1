@@ -68,6 +68,11 @@ body {
     padding: 10px;
     font-size: 14px;
 }
+
+.main_content_30 {
+    padding: 20px 30px;
+    font-size: 14px;
+}
 .main_login {
     padding: 10px;
     font-size: 14px;
@@ -123,6 +128,18 @@ input[type=text] {
 .registr_block {
     text-align: center;
     padding: 8px 0;
+}
+
+/*table common style*/
+.table_list {
+    margin: 4px 0;
+    border-collapse: collapse;
+}
+
+.cell_list {
+    border: solid 1px;
+    padding: 3px;
+    vertical-align: top;
 }
 
 /* Footer

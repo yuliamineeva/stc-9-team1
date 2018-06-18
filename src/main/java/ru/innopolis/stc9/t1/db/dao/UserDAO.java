@@ -17,11 +17,13 @@ public interface UserDAO {
 
     List<User> getAllUsersByType(int type);
 
-    List<User> getAllUsers();
+    List<User> getAllUsers() throws SQLException;
 
     List<User> getAllUsersNotInGroup(int group_id);
 
     boolean updateUser(User user);
 
-    boolean deleteUserById(int id);
+    int deleteUserById(int id) throws SQLException;
+
+    int updateUserRole(int id, int roleId) throws SQLException;
 }

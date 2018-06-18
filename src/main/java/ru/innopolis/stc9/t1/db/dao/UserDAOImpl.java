@@ -16,7 +16,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public int addStudent(String login, String hashPass, String name) throws SQLException {
-        int result = -1;
+        int result;
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(
                      "INSERT INTO users (login, passw, fio) VALUES (?, ?, ?)")) {
@@ -138,17 +138,12 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public List<User> getAllUsers() {
-        Connection connection = connectionManager.getConnection();
-        List<User> users = null;
-        try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * " +
-                    "FROM users");
+    public List<User> getAllUsers() throws SQLException {
+        List<User> users;
+        try (Connection connection = connectionManager.getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery("SELECT * FROM users");) {
             users = getUserlistFromResultset(resultSet);
-            connection.close();
-        } catch (SQLException e) {
-            logger.error("Error trying to get All Users from DB", e);
         }
         return users;
     }
@@ -192,19 +187,28 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public boolean deleteUserById(int id) {
-        Connection connection = connectionManager.getConnection();
-        int countRow = 0;
-        try {
-            PreparedStatement statement = connection.prepareStatement("DELETE FROM users " +
-                    "WHERE user_id = ?");
+    public int deleteUserById(int id) throws SQLException {
+        int result;
+        try (Connection connection = connectionManager.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "DELETE FROM users WHERE user_id = ?");) {
             statement.setInt(1, id);
-            countRow = statement.executeUpdate();
-            connection.close();
-        } catch (SQLException e) {
-            logger.error("Error trying to delete user", e);
+            result = statement.executeUpdate();
         }
-        return countRow > 0;
+        return result;
+    }
+
+    @Override
+    public int updateUserRole(int id, int roleId) throws SQLException {
+        int result;
+        try (Connection connection = connectionManager.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "UPDATE users SET type_id =? WHERE user_id =?")) {
+            statement.setInt(1, roleId);
+            statement.setInt(2, id);
+            result = statement.executeUpdate();
+        }
+        return result;
     }
 
 }
