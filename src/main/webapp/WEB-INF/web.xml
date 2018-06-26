@@ -13,6 +13,7 @@
         <param-value>
             /WEB-INF/security-context.xml
             /WEB-INF/classes/datasource-config.xml
+            /WEB-INF/hibernate.xml
         </param-value>
     </context-param>
 

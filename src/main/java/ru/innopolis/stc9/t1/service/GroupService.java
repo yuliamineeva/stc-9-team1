@@ -2,6 +2,7 @@ package ru.innopolis.stc9.t1.service;
 
 import org.apache.log4j.Logger;
 import ru.innopolis.stc9.t1.db.dao.GroupDAO;
+import ru.innopolis.stc9.t1.db.dao.GroupDAOImplH;
 import ru.innopolis.stc9.t1.pojo.Group;
 
 import java.util.ArrayList;
@@ -10,8 +11,8 @@ public class GroupService {
     private final static Logger logger = Logger.getLogger(GroupService.class);
     private GroupDAO groupDAO;
 
-    public GroupService(GroupDAO groupDAO) {
-        this.groupDAO = groupDAO;
+    public GroupService() {
+        groupDAO = new GroupDAOImplH();
     }
 
     public Group getGroupById(int id){
@@ -23,7 +24,9 @@ public class GroupService {
     }
 
     public ArrayList<Group> getAllGroups(){
-        return groupDAO.getAllGroups();
+        ArrayList<Group> arrayList = new ArrayList();
+        arrayList.addAll(groupDAO.getAllGroups());
+        return arrayList;
     }
 
     public boolean addGroup(Group group){

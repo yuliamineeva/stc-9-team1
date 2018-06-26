@@ -11,7 +11,7 @@
 <div class="main">
     <div class="main_content">
         <%
-            GroupService groupService = new GroupService(new GroupDAOImpl());
+            GroupService groupService = new GroupService();
         %>
         <table border="1" cellspacing="0" cellpadding="3" align="center">
             <tr>
