@@ -9,12 +9,12 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class ConnectionManagerJDBCImpl implements ConnectionManager {
     private static ConnectionManager connectionManager;
@@ -37,7 +37,7 @@ public class ConnectionManagerJDBCImpl implements ConnectionManager {
     }
 
     private ConnectionManagerJDBCImpl(){
-        readXmlDbOptions();
+        readDbProperties();
         try{
             Class.forName(db_driverClassName);
         }catch(ClassNotFoundException ex){
@@ -57,6 +57,26 @@ public class ConnectionManagerJDBCImpl implements ConnectionManager {
             logger.error("error to get connection",e);
         }
         return connection;
+    }
+
+    /** Функция чтения настроек БД из файла properties*/
+    private void readDbProperties(){
+        Properties property = new Properties();
+        try {
+            File dbPropFile = new File(Thread.currentThread().getContextClassLoader().
+                    getResource("datasource-config.properties").toURI());
+            property.load(new FileInputStream(dbPropFile));
+            db_driverClassName = property.getProperty("driverClassName");
+            db_url = property.getProperty("url");
+            db_user = property.getProperty("username");
+            db_pass = property.getProperty("password");
+        }catch(URISyntaxException e){
+            logger.error("error to get DBproperty file", e);
+        }catch(FileNotFoundException e){
+            logger.error("file DBproperty not found", e);
+        }catch(IOException e){
+            logger.error("IOExeption when read DBproperty file", e);
+        }
     }
 
     /** Функция чтения настроек БД из файла */
