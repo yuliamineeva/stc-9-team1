@@ -52,6 +52,11 @@ public class UserService {
         return user;
     }
 
+    public List<User> getAllUsersByType(int type) {
+        List<User> users = userDao.getAllUsersByType(type);
+        return users;
+    }
+
     public int getUserType(String login) {
         User user = userDao.getUserByLogin(login);
         return (user != null) ? user.getType_id() : 0;

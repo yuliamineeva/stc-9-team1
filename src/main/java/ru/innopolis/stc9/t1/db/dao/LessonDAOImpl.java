@@ -5,10 +5,9 @@ import ru.innopolis.stc9.t1.db.connection.ConnectionManager;
 import ru.innopolis.stc9.t1.db.connection.ConnectionManagerJDBCImpl;
 import ru.innopolis.stc9.t1.pojo.Lesson;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class LessonDAOImpl implements LessonDAO {
@@ -76,17 +75,93 @@ public class LessonDAOImpl implements LessonDAO {
 
     @Override
     public List<Lesson> getAllLessons() {
-        return null;
+        Connection connection = connectionManager.getConnection();
+        List<Lesson> lessons = null;
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * " +
+                    "FROM lessons INNER JOIN users ON lessons.tutor_id = users.user_id " +
+                    "INNER JOIN groups ON lessons.group_id = groups.group_id ");
+            lessons = getLessonsListFromResultset(resultSet);
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lessons;
+    }
+
+    private ArrayList<Lesson> getLessonsListFromResultset(ResultSet resultSet) throws SQLException {
+        ArrayList<Lesson> lessonsArrayList = new ArrayList<>();
+        Lesson lesson;
+        while (resultSet.next()) {
+            lesson = new Lesson(
+                    resultSet.getInt("lsn_id"),
+                    resultSet.getInt("tutor_id"),
+                    resultSet.getInt("group_id"),
+                    resultSet.getString("topic"),
+                    resultSet.getDate("date"),
+                    resultSet.getString("fio"),
+                    resultSet.getString("name"));
+            lessonsArrayList.add(lesson);
+        }
+        return lessonsArrayList.size() == 0 ? null : lessonsArrayList;
     }
 
     @Override
-    public List<Lesson> getLessonsByGroup(int tutor_id) {
-        return null;
+    public List<Lesson> getLessonsByGroup(int group_id) {
+        Connection connection = connectionManager.getConnection();
+        List<Lesson> lessonsByGroup = null;
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT * " +
+                    "FROM lessons INNER JOIN users ON lessons.tutor_id = users.user_id " +
+                    "INNER JOIN groups ON lessons.group_id = groups.group_id " +
+                    "WHERE lessons.group_id = ?");
+            statement.setInt(1, group_id);
+            ResultSet resultSet = statement.executeQuery();
+            lessonsByGroup = getLessonsListFromResultset(resultSet);
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lessonsByGroup;
     }
 
     @Override
     public List<Lesson> getLessonsByTutor(int tutor_id) {
-        return null;
+        Connection connection = connectionManager.getConnection();
+        List<Lesson> lessonsByTutor = null;
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT * " +
+                    "FROM lessons INNER JOIN users ON lessons.tutor_id = users.user_id " +
+                    "INNER JOIN groups ON lessons.group_id = groups.group_id " +
+                    "WHERE lessons.tutor_id = ?");
+            statement.setInt(1, tutor_id);
+            ResultSet resultSet = statement.executeQuery();
+            lessonsByTutor = getLessonsListFromResultset(resultSet);
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lessonsByTutor;
+    }
+
+    @Override
+    public List<Lesson> getLessonsByDate(Date date) {
+        Connection connection = connectionManager.getConnection();
+        List<Lesson> lessonsByDate = null;
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT * " +
+                    "FROM lessons INNER JOIN users ON lessons.tutor_id = users.user_id " +
+                    "INNER JOIN groups ON lessons.group_id = groups.group_id " +
+                    "WHERE DATE(lessons.date) = ? + INTERVAL 1 DAY");
+            statement.setDate(1, new java.sql.Date(date.getTime()));
+            ResultSet resultSet = statement.executeQuery();
+            lessonsByDate = getLessonsListFromResultset(resultSet);
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lessonsByDate;
     }
 
     @Override

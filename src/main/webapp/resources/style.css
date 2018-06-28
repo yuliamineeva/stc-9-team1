@@ -83,7 +83,6 @@ body {
     text-align: center;
 }
 
-/* Добавлено Минеевой Ю.Н. ниже*/
 .login {
     padding: 10px;
     font-size: 16px;
@@ -111,7 +110,24 @@ input[type=text] {
     width: 49%;
 }
 
-/* Добавлено Минеевой Ю.Н. выше*/
+H2 {
+    font-size: 24px;
+    padding: 10px 20px 10px 20px;
+    text-align: center;
+}
+
+.selected_form {
+    vertical-align: middle;
+    horiz-align: center;
+}
+
+.selected_part {
+    display: inline-block;
+    width: 200px;
+    height: 25px;
+    vertical-align: middle;
+    horiz-align: center;
+}
 
 .registr_content {
     width: 100%;
