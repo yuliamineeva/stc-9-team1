@@ -1,19 +1,23 @@
 package ru.innopolis.stc9.t1.service;
 
 import org.apache.log4j.Logger;
-import ru.innopolis.stc9.t1.db.dao.GroupDAO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import ru.innopolis.stc9.t1.db.dao.GroupDAOImplH;
 import ru.innopolis.stc9.t1.pojo.Group;
 
 import java.util.ArrayList;
 
+@Service
 public class GroupService {
     private final static Logger logger = Logger.getLogger(GroupService.class);
-    private GroupDAO groupDAO;
 
-    public GroupService() {
-        groupDAO = new GroupDAOImplH();
-    }
+    @Autowired
+    private GroupDAOImplH groupDAO;
+
+    public GroupService() {}
 
     public Group getGroupById(int id){
         return groupDAO.getGroupById(id);

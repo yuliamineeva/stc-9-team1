@@ -10,9 +10,6 @@
 <%@ include file="aside.jsp" %>
 <div class="main">
     <div class="main_content">
-        <%
-            GroupService groupService = new GroupService();
-        %>
         <table border="1" cellspacing="0" cellpadding="3" align="center">
             <tr>
                 <th>ID группы</th>
@@ -20,11 +17,6 @@
                 <th>Редактировать группу</th>
                 <th>Удалить группу</th>
             </tr>
-
-                <%
-                    ArrayList<Group> arrayGroup = groupService.getAllGroups();
-                    request.setAttribute("arrayGroup", arrayGroup);
-                %>
                 <c:if test="${arrayGroup != null}">
                     <c:forEach var="group" items="${arrayGroup}" >
                         <c:if test="${group != null}">
