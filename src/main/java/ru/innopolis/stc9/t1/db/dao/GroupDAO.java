@@ -3,6 +3,7 @@ package ru.innopolis.stc9.t1.db.dao;
 import ru.innopolis.stc9.t1.pojo.Group;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface GroupDAO {
 
@@ -10,7 +11,7 @@ public interface GroupDAO {
 
     public Group getGroupByName(String name);
 
-    public ArrayList<Group> getAllGroups();
+    public List<Group> getAllGroups();
 
     public boolean addGroup(Group group);
 

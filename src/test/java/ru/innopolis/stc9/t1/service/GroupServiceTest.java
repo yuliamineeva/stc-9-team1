@@ -29,7 +29,7 @@ public class GroupServiceTest {
         when(mockGroupDAO.getAllGroups()).thenReturn(groupList);
         Group mockGroup = mock(Group.class);
         when(mockGroupDAO.addGroup(mockGroup)).thenReturn(storeGrups.add(new Group(11,"test")));
-        groupService = new GroupService(mockGroupDAO);
+        groupService = new GroupService();
     }
 
     @Test

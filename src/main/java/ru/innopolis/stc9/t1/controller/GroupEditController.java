@@ -13,7 +13,7 @@ import ru.innopolis.stc9.t1.service.GroupService;
 @Controller
 public class GroupEditController{
     private final static Logger logger = Logger.getLogger(GroupEditController.class);
-    private GroupService groupService = new GroupService(new GroupDAOImpl());
+    private GroupService groupService = new GroupService();
 
     @RequestMapping(value = "/groups/manager", method = RequestMethod.GET)
     public String getGroupEditPage(

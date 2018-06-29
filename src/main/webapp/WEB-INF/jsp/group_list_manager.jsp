@@ -26,7 +26,7 @@
 
         <%
             String paramGroupId = request.getParameter("groupId");
-            GroupService groupService = new GroupService(new GroupDAOImpl());
+            GroupService groupService = new GroupService();
             Group group = groupService.getGroupById(Integer.valueOf(paramGroupId));
             if(group != null) {
                 request.setAttribute("groupName", group.getName());

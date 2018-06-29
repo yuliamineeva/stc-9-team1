@@ -69,7 +69,7 @@
                         <td align="left">Название группы:</td>
                         <td align="left">
                             <%
-                                GroupService groupService = new GroupService(new GroupDAOImpl());
+                                GroupService groupService = new GroupService();
                                 int id = Integer.valueOf((String)request.getAttribute("groupId"));
                                 String strName = groupService.getGroupById(id).getName();
                                 request.setAttribute("groupName", strName);

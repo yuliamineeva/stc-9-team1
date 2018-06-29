@@ -6,3 +6,4 @@
 *.iws
 *.iml
 /src/main/webapp/WEB-INF/classes/datasource-config.xml
+/src/main/resources/datasource-config.properties
