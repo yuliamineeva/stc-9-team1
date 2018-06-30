@@ -2,8 +2,6 @@ package ru.innopolis.stc9.t1.service;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import ru.innopolis.stc9.t1.db.dao.GroupDAOImplH;
 import ru.innopolis.stc9.t1.pojo.Group;
