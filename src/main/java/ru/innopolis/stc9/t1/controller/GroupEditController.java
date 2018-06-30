@@ -1,6 +1,7 @@
 package ru.innopolis.stc9.t1.controller;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +14,9 @@ import ru.innopolis.stc9.t1.service.GroupService;
 @Controller
 public class GroupEditController{
     private final static Logger logger = Logger.getLogger(GroupEditController.class);
-    private GroupService groupService = new GroupService();
+
+    @Autowired
+    private GroupService groupService;
 
     @RequestMapping(value = "/groups/manager", method = RequestMethod.GET)
     public String getGroupEditPage(
@@ -27,7 +30,7 @@ public class GroupEditController{
             model.addAttribute("act", act);
         }
         if (groupId != null) {
-            model.addAttribute("groupId", groupId);
+            model.addAttribute("group", groupService.getGroupById(Integer.valueOf(groupId)));
         }
         return "group_manager";
     }
@@ -39,14 +42,17 @@ public class GroupEditController{
         if(groupId != null) {
             try {
                 boolean result = groupService.deleteGroup(Integer.valueOf(groupId));
-                if (result) return "groups";
+                if (result) {
+                    model.addAttribute("arrayGroup", groupService.getAllGroups());
+                    return "groups";
+                }
             } catch (Exception e) {
                 logger.error("Error to delete group", e);
             }
         }
         model.addAttribute("result", "delErr");
         model.addAttribute("act", "delete");
-        model.addAttribute("groupId", groupId);
+        model.addAttribute("group", groupService.getGroupById(Integer.valueOf(groupId)));
         return "group_manager";
     }
 
@@ -60,7 +66,10 @@ public class GroupEditController{
             try {
                 group = new Group(-1, groupName);
                 boolean result = groupService.addGroup(group);
-                if (result) return "groups";
+                if (result){
+                    model.addAttribute("arrayGroup", groupService.getAllGroups());
+                    return "groups";
+                }
             } catch (Exception e) {
                 logger.error("Error to add group", e);
             }
@@ -79,14 +88,17 @@ public class GroupEditController{
             try {
                 Group group = new Group(Integer.valueOf(groupId), groupName);
                 boolean result = groupService.updateGroup(group);
-                if (result) return "groups";
+                if (result){
+                    model.addAttribute("arrayGroup", groupService.getAllGroups());
+                    return "groups";
+                }
             } catch (Exception e) {
                 logger.error("Error to edit group", e);
             }
         }
         model.addAttribute("result", "editErr");
         model.addAttribute("act", "edit");
-        model.addAttribute("group_id", groupId);
+        model.addAttribute("group", groupService.getGroupById(Integer.valueOf(groupId)));
         return "group_manager";
     }
 

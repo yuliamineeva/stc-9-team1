@@ -23,7 +23,7 @@ import java.util.Set;
 public class LessonController {
     private final static Logger logger = Logger.getLogger(LessonController.class);
     private LessonService lessonService = new LessonService();
-    private GroupService groupService = new GroupService(new GroupDAOImpl());
+    private GroupService groupService = new GroupService();
     private UserService userService = new UserService();
 
     @RequestMapping(value = "/lessons", method = RequestMethod.GET)
