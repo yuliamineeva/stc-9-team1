@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.innopolis.stc9.t1.ErrorMsgHandler;
-import ru.innopolis.stc9.t1.pojo.User;
-import ru.innopolis.stc9.t1.service.UserService;
+import ru.innopolis.stc9.t1.entities.UserH;
+import ru.innopolis.stc9.t1.service.UserServiceH;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class UserController {
 
     private final static Logger logger = Logger.getLogger(GroupEditController.class);
     @Autowired
-    private UserService userService;
+    private UserServiceH userService;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(
@@ -48,7 +48,7 @@ public class UserController {
         if (userLogin.isEmpty() || userName.isEmpty() || userPassword.isEmpty()) {
             reply = "заполните все поля";
         } else {
-            userService.addStudent(userLogin, userPassword, userName);
+            userService.addUser(userLogin, userPassword, userName);
             err = ErrorMsgHandler.getMessage();
             if (err == null) {
                 reply = "user " + userLogin + " has been registered, you can login";
@@ -62,7 +62,9 @@ public class UserController {
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
     public String getProfile(Model model) {
         String currentUserLogin = SecurityContextHolder.getContext().getAuthentication().getName();
-        User currentUser = userService.getUserByLogin(currentUserLogin);
+        UserH currentUser = userService.getUserByLogin(currentUserLogin);
+        String errorGetUser = ErrorMsgHandler.getMessage();
+        model.addAttribute("errorGetUser", errorGetUser);
         model.addAttribute("user", currentUser);
         return "users/profile";
     }
@@ -95,7 +97,7 @@ public class UserController {
 
     @RequestMapping("admin/userList")
     public String getUserList(Model model) {
-        List<User> users = userService.getAllUsers();
+        List<UserH> users = userService.getAllUsers();
         String errorGetUserList = ErrorMsgHandler.getMessage();
         model.addAttribute("errorGetUserList", errorGetUserList);
         model.addAttribute("users", users);
@@ -103,10 +105,12 @@ public class UserController {
     }
 
     @RequestMapping(value = "/admin/userList/editRole", method = RequestMethod.GET)
-    public String getEditRole(@RequestParam int id, String login, String name, int roleId, Model model) {
-        User editableUser = new User(id, login, name, roleId);
+    public String getEditRole(@RequestParam int id, Model model) {
+        UserH editableUser = userService.getUser(id);
+        String errorGetUser = ErrorMsgHandler.getMessage();
         String currentUserLogin = SecurityContextHolder.getContext().getAuthentication().getName();
-        boolean himself = currentUserLogin.equals(login);
+        boolean himself = currentUserLogin.equals(editableUser.getLogin());
+        model.addAttribute("errorGetUser", errorGetUser);
         model.addAttribute("himself", himself);
         model.addAttribute("user", editableUser);
         return "users/userEditRole";
@@ -122,10 +126,12 @@ public class UserController {
     }
 
     @RequestMapping(value = "/admin/userList/deleteUser", method = RequestMethod.GET)
-    public String getDeleteUser(@RequestParam int id, String login, String name, int roleId, Model model) {
-        User deletedUser = new User(id, login, name, roleId);
+    public String getDeleteUser(@RequestParam int id, Model model) {
+        UserH deletedUser = userService.getUser(id);
+        String errorGetUser = ErrorMsgHandler.getMessage();
         String currentUserLogin = SecurityContextHolder.getContext().getAuthentication().getName();
-        boolean himself = currentUserLogin.equals(login);
+        boolean himself = currentUserLogin.equals(deletedUser.getLogin());
+        model.addAttribute("errorGetUser", errorGetUser);
         model.addAttribute("himself", himself);
         model.addAttribute("user", deletedUser);
         return "users/userDelete";
@@ -133,7 +139,7 @@ public class UserController {
 
     @RequestMapping(value = "/admin/userList/deleteUser", method = RequestMethod.POST)
     public String setDeleteUser(@RequestParam int userId, String userLogin, Model model) {
-        userService.deleteUserById(userId);
+        userService.deleteUser(userId);
         String errorEditUser = ErrorMsgHandler.getMessage();
         model.addAttribute("deletedUserLogin", userLogin);
         model.addAttribute("errorEditUser", errorEditUser);

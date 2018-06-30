@@ -38,18 +38,18 @@
                 <th class="cell_list">delete&nbsp&nbsp&nbsp</th>
             </tr>
             <c:forEach var="user" items="${users}">
-                <c:set var="senderParams"
-                       value="?id=${user.id}&login=${user.login}&name=${user.name}&roleId=${user.type_id}"/>
                 <tr>
                     <td class="cell_list">${user.id}&nbsp&nbsp&nbsp</td>
                     <td class="cell_list">${user.login}&nbsp&nbsp&nbsp</td>
                     <td class="cell_list">${user.name}&nbsp&nbsp&nbsp</td>
                     <td class="cell_list">
-                        <a href="${pageContext.request.contextPath}/admin/userList/editRole${senderParams}">${user.userType.type_name}</a>
+                        <a href="${pageContext.request.contextPath}/admin/userList/editRole?id=${user.id}">
+                                ${user.role.role_description}
+                        </a>
                         &nbsp&nbsp&nbsp
                     </td>
                     <td class="cell_list">
-                        <a href="${pageContext.request.contextPath}/admin/userList/deleteUser${senderParams}">delete</a>
+                        <a href="${pageContext.request.contextPath}/admin/userList/deleteUser?id=${user.id}">delete</a>
                         &nbsp&nbsp&nbsp
                     </td>
                 </tr>

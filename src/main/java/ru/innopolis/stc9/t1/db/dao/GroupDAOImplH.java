@@ -32,6 +32,7 @@ public class GroupDAOImplH implements GroupDAO{
         Session session = sessionFactory.openSession();
         Criteria criteria = session.createCriteria(Group.class);
         criteria.add(Restrictions.eq("name", name));
+        if(criteria.list() == null || criteria.list().size() == 0) return null;
         Group group = (Group) criteria.list().get(0);
         session.close();
         return group;
@@ -53,7 +54,7 @@ public class GroupDAOImplH implements GroupDAO{
     public boolean addGroup(Group group) {
         if(group == null) return false;
         Session session = sessionFactory.openSession();
-        if(getGroupByName(group.getName()) != null)return false;
+        if(getGroupByName(group.getName()) != null) return false;
         session.beginTransaction();
         session.save(group);
         session.getTransaction().commit();

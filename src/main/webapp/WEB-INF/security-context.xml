@@ -10,6 +10,7 @@
     <http pattern="/login" security="none"/>
     <http pattern="/registration" security="none"/>
     <http pattern="/resources/**" security="none"/>
+    <http pattern="/tests/**" security="none"/>
 
     <http auto-config="true">
         <csrf disabled="true"/>
@@ -32,14 +33,11 @@
             <password-encoder hash="sha-256"/>
             <jdbc-user-service data-source-ref="dataSource"
                                users-by-username-query=
-                                       "SELECT login, passw, 'true' AS enabled FROM users WHERE login=?"
+                                       "SELECT login, password, 'true' AS enabled
+                                        FROM users_h WHERE login=?"
                                authorities-by-username-query=
-                                       "SELECT login, CASE type_id
-                                            WHEN 1 THEN 'ROLE_TEACHER'
-                                            WHEN 2 THEN 'ROLE_USER'
-                                            WHEN 3 THEN 'ROLE_ADMIN'
-                                            END
-                                        FROM users WHERE login=?"/>
+                                       "SELECT login, role FROM users_h, roles_h
+                                        WHERE role_role_id=role_id AND login=?"/>
             <!--authorities-by-username-query=
             "SELECT login, role FROM users, user_types
             WHERE users.type_id=user_types.type_id AND login =?"-->

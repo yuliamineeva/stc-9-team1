@@ -1,5 +1,4 @@
 <%@ page import="ru.innopolis.stc9.t1.service.GroupService" %>
-<%@ page import="ru.innopolis.stc9.t1.db.dao.GroupDAOImpl" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -24,22 +23,11 @@
             <br><br>
         </c:if>
 
-        <%
-            String paramAct = request.getParameter("act");
-            if(paramAct != null && !paramAct.equals("")) {
-                request.setAttribute("act", paramAct);
-            }
-            String paramGroupId = request.getParameter("groupId");
-            if(paramGroupId != null && !paramGroupId.equals("")) {
-                request.setAttribute("groupId", paramGroupId);
-            }
-        %>
-
         <c:if test="${act != null && act.equals('delete')}">
-            <p align="center">Вы действительно хотите удалить группу с ID=${groupId}?
+            <p align="center">Вы действительно хотите удалить группу с ID=${group.group_id}?
             <form name="group_delete" action="${pageContext.request.contextPath}/groups/delete" method="post">
                 <input type="submit" value="Удалить">
-                <input type="hidden" name="groupId" value=${groupId}>
+                <input type="hidden" name="groupId" value=${group.group_id}>
             </form>
             </p>
         </c:if>
@@ -68,14 +56,8 @@
                     <tr>
                         <td align="left">Название группы:</td>
                         <td align="left">
-                            <%
-                                GroupService groupService = new GroupService();
-                                int id = Integer.valueOf((String)request.getAttribute("groupId"));
-                                String strName = groupService.getGroupById(id).getName();
-                                request.setAttribute("groupName", strName);
-                            %>
-                            <input type="text" name="groupName" size="50" value=${groupName}>
-                            <input type="hidden" name="groupId" value=${groupId}>
+                            <input type="text" name="groupName" size="50" value=${group.name}>
+                            <input type="hidden" name="groupId" value=${group.group_id}>
                         </td>
                     </tr>
                     <tr>

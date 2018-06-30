@@ -7,6 +7,12 @@
     <div class="main_content_30">
 
         <%--block - response message about the result of the action--%>
+        <c:if test="${errorGetUser!=null}">
+            <div style="color: red">
+                    ${errorGetUser}
+            </div>
+            <br>
+        </c:if>
         <c:if test="${errorEditUser!=null}">
             <div style="color: red">
                     ${errorEditUser}
@@ -35,7 +41,7 @@
             </tr>
             <tr>
                 <td class="cell_list" style="font-weight: bold">role</td>
-                <td class="cell_list">${user.userType.type_name}&nbsp&nbsp&nbsp</td>
+                <td class="cell_list">${user.role.role_description}&nbsp&nbsp&nbsp</td>
             </tr>
         </table>
 

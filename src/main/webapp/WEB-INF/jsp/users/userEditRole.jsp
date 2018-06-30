@@ -6,6 +6,13 @@
 <div class="main">
     <div class="main_content_30">
 
+        <c:if test="${errorGetUser!=null}">
+            <div style="color: red">
+                    ${errorGetUser}
+            </div>
+            <br>
+        </c:if>
+
         <c:choose>
             <c:when test="${himself}">
                 Вы не можете изменить права самому себе<br>
@@ -29,7 +36,7 @@
                             <td class="cell_list">${user.login}&nbsp&nbsp&nbsp</td>
                             <td class="cell_list">${user.name}&nbsp&nbsp&nbsp</td>
                             <c:choose>
-                                <c:when test="${user.type_id==1}">
+                                <c:when test="${user.role.role_int==1}">
                                     <td class="cell_list">преподаватель &nbsp&nbsp&nbsp</td>
                                     <td class="cell_list">
                                         <select size="2" name="newRoleId" required>
@@ -38,7 +45,7 @@
                                         </select>
                                     </td>
                                 </c:when>
-                                <c:when test="${user.type_id==2}">
+                                <c:when test="${user.role.role_int==2}">
                                     <td class="cell_list">студент &nbsp&nbsp&nbsp</td>
                                     <td class="cell_list">
                                         <select size="2" name="newRoleId" required>
@@ -47,7 +54,7 @@
                                         </select>
                                     </td>
                                 </c:when>
-                                <c:when test="${user.type_id==3}">
+                                <c:when test="${user.role.role_int==3}">
                                     <td class="cell_list">админ &nbsp&nbsp&nbsp</td>
                                     <td class="cell_list">
                                         <select size="2" name="newRoleId" required>
