@@ -1,18 +1,18 @@
 package ru.innopolis.stc9.t1.controller;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.innopolis.stc9.t1.db.dao.GroupDAOImpl;
+import ru.innopolis.stc9.t1.entities.UserH;
 import ru.innopolis.stc9.t1.pojo.Group;
 import ru.innopolis.stc9.t1.pojo.Lesson;
-import ru.innopolis.stc9.t1.pojo.User;
 import ru.innopolis.stc9.t1.service.GroupService;
 import ru.innopolis.stc9.t1.service.LessonService;
-import ru.innopolis.stc9.t1.service.UserService;
+import ru.innopolis.stc9.t1.service.UserServiceH;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,9 +22,15 @@ import java.util.Set;
 @Controller
 public class LessonController {
     private final static Logger logger = Logger.getLogger(LessonController.class);
-    private LessonService lessonService = new LessonService();
-    private GroupService groupService = new GroupService();
-    private UserService userService = new UserService();
+
+    @Autowired
+    private LessonService lessonService;
+
+    @Autowired
+    private GroupService groupService;
+
+    @Autowired
+    private UserServiceH userService;
 
     @RequestMapping(value = "/lessons", method = RequestMethod.GET)
     public String getLessons(@RequestParam(value = "lessonsByGroup", required = false) String lessonsByGroup,
@@ -32,7 +38,7 @@ public class LessonController {
                              @RequestParam(value = "lessonsByTutor", required = false) String lessonsByTutor, Model model) {
         ArrayList<Group> allGroups = groupService.getAllGroups();
         Set<Date> dates = lessonService.getAllDatesFromLessons();
-        List<User> allTutors = userService.getAllUsersByType(1);
+        List<UserH> allTutors = userService.getAllUsersByType(1);
         model.addAttribute("allGroups", allGroups);
         model.addAttribute("dates", dates);
         model.addAttribute("allTutors", allTutors);
@@ -66,13 +72,19 @@ public class LessonController {
         return "lessons/lessons";
     }
 
-    @RequestMapping("/lessons_add")
-    public String addLesson() {
+
+    @RequestMapping(value = "/lessons_add", method = RequestMethod.GET)
+    public String addLesson(Model model) {
+        Lesson lesson = new Lesson();
+        lessonService.addLesson(lesson);
+        model.addAttribute("lesson", lessonService.getLessonById(lesson.getLsn_id()));
         return "lessons/lessons_add";
     }
 
-    @RequestMapping("/lessons_edit")
-    public String editLesson() {
+    @RequestMapping(value = "/lessons_edit", method = RequestMethod.GET)
+    public String editLesson(Model model) {
+        Lesson lesson = lessonService.getLessonById(1);
+        model.addAttribute("lesson", lesson);
         return "lessons/lessons_edit";
     }
 

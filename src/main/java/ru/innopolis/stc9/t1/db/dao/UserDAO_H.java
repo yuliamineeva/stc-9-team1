@@ -21,6 +21,8 @@ public interface UserDAO_H {
 
     List<UserH> getAllUsers() throws HibernateException;
 
+    List<UserH> getAllUsersByType(int type);
+
     void updateUserRole(int userId, int newRoleInt) throws HibernateException;
 
     void deleteUser(int userId) throws HibernateException;

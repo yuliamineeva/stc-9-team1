@@ -1,6 +1,9 @@
 package ru.innopolis.stc9.t1.entities;
 
+import ru.innopolis.stc9.t1.pojo.Lesson;
+
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "users_h")
@@ -10,6 +13,7 @@ public class UserH {
     private String password;
     private String name;
     private RoleH role;
+    private Set<Lesson> lessons;
 
     public UserH() {
     }
@@ -63,6 +67,15 @@ public class UserH {
 
     public void setRole(RoleH role) {
         this.role = role;
+    }
+
+    @OneToMany(mappedBy = "tutor", fetch = FetchType.LAZY)
+    public Set<Lesson> getLessons() {
+        return lessons;
+    }
+
+    public void setLessons(Set<Lesson> lessons) {
+        this.lessons = lessons;
     }
 
     @Override

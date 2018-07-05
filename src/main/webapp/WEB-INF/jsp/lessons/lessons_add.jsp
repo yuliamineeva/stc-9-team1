@@ -8,6 +8,8 @@
     <div class="main_content">
         <H2>Добавление занятия</H2>
         <br>
+        <a>${lesson.getLsn_id()}</a>
+        <a>${lesson.getTopic()}</a>
     </div>
 </div>
 <%@ include file="../footer.jsp" %>

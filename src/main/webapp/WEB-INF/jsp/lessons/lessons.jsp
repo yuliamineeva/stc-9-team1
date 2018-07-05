@@ -83,8 +83,8 @@
                         <td align="center">${lesson.getLsn_id()}</td>
                         <td align="left">${lesson.getTopic()}</td>
                         <td align="center">${lesson.getDate()}</td>
-                        <td align="left">${lesson.getGroup_name()}</td>
-                        <td align="left">${lesson.getTutor_name()}</td>
+                        <td align="left">${lesson.getGroup().getName()}</td>
+                        <td align="left">${lesson.getTutor().getName()}</td>
                         <sec:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')">
                             <td align="center"><a
                                     href="${pageContext.request.contextPath}/lessons_edit">Редактировать</a></td>
@@ -101,8 +101,8 @@
                         <td align="center">${lesson.getLsn_id()}</td>
                         <td align="left">${lesson.getTopic()}</td>
                         <td align="center">${lesson.getDate()}</td>
-                        <td align="left">${lesson.getGroup_name()}</td>
-                        <td align="left">${lesson.getTutor_name()}</td>
+                        <td align="left">${lesson.getGroup().getName()}</td>
+                        <td align="left">${lesson.getTutor().getName()}</td>
                         <sec:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')">
                             <td align="center"><a
                                     href="${pageContext.request.contextPath}/lessons_edit">Редактировать</a></td>
@@ -119,8 +119,8 @@
                         <td align="center">${lesson.getLsn_id()}</td>
                         <td align="left">${lesson.getTopic()}</td>
                         <td align="center">${lesson.getDate()}</td>
-                        <td align="left">${lesson.getGroup_name()}</td>
-                        <td align="left">${lesson.getTutor_name()}</td>
+                        <td align="left">${lesson.getGroup().getName()}</td>
+                        <td align="left">${lesson.getTutor().getName()}</td>
                         <sec:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')">
                             <td align="center"><a
                                     href="${pageContext.request.contextPath}/lessons_edit">Редактировать</a></td>
@@ -137,8 +137,8 @@
                         <td align="center">${lesson.getLsn_id()}</td>
                         <td align="left">${lesson.getTopic()}</td>
                         <td align="center">${lesson.getDate()}</td>
-                        <td align="left">${lesson.getGroup_name()}</td>
-                        <td align="left">${lesson.getTutor_name()}</td>
+                        <td align="left">${lesson.getGroup().getName()}</td>
+                        <td align="left">${lesson.getTutor().getName()}</td>
                         <sec:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')">
                             <td align="center"><a
                                     href="${pageContext.request.contextPath}/lessons_edit">Редактировать</a></td>

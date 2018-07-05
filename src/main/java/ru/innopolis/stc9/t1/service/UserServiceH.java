@@ -73,6 +73,11 @@ public class UserServiceH {
         return users;
     }
 
+    public List<UserH> getAllUsersByType(int type) {
+        List<UserH> users = userDAO.getAllUsersByType(type);
+        return users;
+    }
+
     public void updateUserRole(int userId, int newRoleInt) {
         try {
             userDAO.updateUserRole(userId, newRoleInt);

@@ -1,18 +1,13 @@
 package ru.innopolis.stc9.t1.db.dao;
 
-import org.apache.log4j.Logger;
-import ru.innopolis.stc9.t1.db.connection.ConnectionManager;
-import ru.innopolis.stc9.t1.db.connection.ConnectionManagerJDBCImpl;
-import ru.innopolis.stc9.t1.pojo.Lesson;
-
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+//@Repository
+public class LessonDAOImpl {
+        /*
 
 public class LessonDAOImpl implements LessonDAO {
     private final static Logger logger = Logger.getLogger(LessonDAOImpl.class);
     private static ConnectionManager connectionManager = ConnectionManagerJDBCImpl.getInstance();
+
 
     @Override
     public boolean addLesson(Lesson lesson) {
@@ -201,4 +196,5 @@ public class LessonDAOImpl implements LessonDAO {
         }
         return countRow > 0;
     }
+    */
 }

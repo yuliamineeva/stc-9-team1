@@ -1,59 +1,38 @@
 package ru.innopolis.stc9.t1.pojo;
 
+import ru.innopolis.stc9.t1.entities.UserH;
+
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity
+@Table(name = "lessons_h")
 public class Lesson {
     private int lsn_id;
-    private int tutor_id;
-    private int group_id;
     private String topic;
     private Date date;
-    private String tutor_name;
-    private String group_name;
+    private Group group;
+    private UserH tutor;
 
     public Lesson() {
     }
 
-    public Lesson(int tutor_id, int group_id, String topic, Date date) {
-        this.tutor_id = tutor_id;
-        this.group_id = group_id;
+    public Lesson(String topic, Date date, Group group, UserH tutor) {
         this.topic = topic;
         this.date = date;
+        this.group = group;
+        this.tutor = tutor;
     }
 
-    public Lesson(int lsn_id, int tutor_id, int group_id, String topic, Date date) {
-        this(tutor_id, group_id, topic, date);
-        this.lsn_id = lsn_id;
-    }
-
-    public Lesson(int lsn_id, int tutor_id, int group_id, String topic, Date date, String tutor_name, String group_name) {
-        this(lsn_id, tutor_id, group_id, topic, date);
-        this.tutor_name = tutor_name;
-        this.group_name = group_name;
-    }
-
+    @Id
+    @Column(name = "lsn_id", unique = true)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getLsn_id() {
         return lsn_id;
     }
 
     public void setLsn_id(int lsn_id) {
         this.lsn_id = lsn_id;
-    }
-
-    public int getTutor_id() {
-        return tutor_id;
-    }
-
-    public void setTutor_id(int tutor_id) {
-        this.tutor_id = tutor_id;
-    }
-
-    public int getGroup_id() {
-        return group_id;
-    }
-
-    public void setGroup_id(int group_id) {
-        this.group_id = group_id;
     }
 
     public String getTopic() {
@@ -64,6 +43,8 @@ public class Lesson {
         this.topic = topic;
     }
 
+    @Temporal(TemporalType.DATE)
+    @Column(name = "date")
     public Date getDate() {
         return date;
     }
@@ -72,33 +53,32 @@ public class Lesson {
         this.date = date;
     }
 
-    public String getTutor_name() {
-        return tutor_name;
+    @ManyToOne(optional = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    public Group getGroup() {
+        return group;
     }
 
-    public void setTutor_name(String tutor_name) {
-        this.tutor_name = tutor_name;
+    public void setGroup(Group group) {
+        this.group = group;
     }
 
-    public String getGroup_name() {
-        return group_name;
+    @ManyToOne(optional = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    public UserH getTutor() {
+        return tutor;
     }
 
-    public void setGroup_name(String group_name) {
-        this.group_name = group_name;
+    public void setTutor(UserH tutor) {
+        this.tutor = tutor;
     }
 
     @Override
     public String toString() {
         return "Lesson{" +
                 "lsn_id=" + lsn_id +
-                ", tutor_id=" + tutor_id +
-                ", group_id=" + group_id +
                 ", topic='" + topic + '\'' +
                 ", date=" + date +
-                ", tutor_name='" + tutor_name + '\'' +
-                ", group_name='" + group_name + '\'' +
+                ", group=" + group +
+                ", tutor=" + tutor +
                 '}';
     }
-
 }

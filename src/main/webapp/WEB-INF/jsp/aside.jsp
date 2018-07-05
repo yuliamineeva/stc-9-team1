@@ -19,6 +19,8 @@
             <br>
             <li><a href="${pageContext.request.contextPath}/lessons">Лекции</a></li>
             <br>
+            <li><a href="${pageContext.request.contextPath}/lessons_add">Добавить Лекцию</a></li>
+            <br>
             <sec:authorize access="hasRole('ROLE_ADMIN')">
                 <li><a href="${pageContext.request.contextPath}/admin/userList">Список пользователей</a></li>
                 <br>
