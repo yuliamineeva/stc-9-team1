@@ -10,8 +10,6 @@ public interface UserDAO {
     // insert
     int addStudent(String login, String hashPass, String name) throws SQLException;
 
-    boolean addUser(User user);
-
     // select
     User getUserById(int id);
 
@@ -34,4 +32,5 @@ public interface UserDAO {
     int updateUserNameByLogin(String login, String name) throws SQLException;
 
     int updateUserPasswordByLogin(String login, String hashPassword) throws SQLException;
+
 }

@@ -6,6 +6,13 @@
 <div class="main">
     <div class="main_content_30">
 
+        <c:if test="${errorGetUser!=null}">
+            <div style="color: red">
+                    ${errorGetUser}
+            </div>
+            <br>
+        </c:if>
+
         <c:choose>
             <c:when test="${himself}">
                 Вы не можете удалить себя<br>
@@ -27,7 +34,7 @@
                             <td class="cell_list">${user.id}&nbsp&nbsp&nbsp</td>
                             <td class="cell_list">${user.login}&nbsp&nbsp&nbsp</td>
                             <td class="cell_list">${user.name}&nbsp&nbsp&nbsp</td>
-                            <td class="cell_list">${user.userType.type_name}&nbsp&nbsp&nbsp</td>
+                            <td class="cell_list">${user.role.role_description}&nbsp&nbsp&nbsp</td>
                         </tr>
                     </table>
                     <input type="submit" value="delete" style="min-width: 80px">

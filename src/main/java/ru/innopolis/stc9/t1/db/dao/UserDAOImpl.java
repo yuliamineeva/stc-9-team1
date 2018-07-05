@@ -29,22 +29,6 @@ public class UserDAOImpl implements UserDAO {
         return result;
     }
 
-    @Override
-    public boolean addUser(User user) {
-        Connection connection = connectionManager.getConnection();
-        int countRow = 0;
-        try {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO users " +
-                    "(login, passw, fio, type_id) VALUES (?, ?, ?, ?)");
-            setStatementForAdd(user, statement);
-            countRow = statement.executeUpdate();
-            connection.close();
-        } catch (SQLException e) {
-            logger.error("Error trying to add user to DB", e);
-        }
-        return countRow > 0;
-    }
-
     private void setStatementForAdd(User user, PreparedStatement statement) throws SQLException {
         statement.setString(1, user.getLogin());
         statement.setString(2, user.getPassword());

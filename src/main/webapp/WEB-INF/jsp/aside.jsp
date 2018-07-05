@@ -26,5 +26,6 @@
         </ul>
     </sec:authorize>
 
-
+    <%--<li><a href="${pageContext.request.contextPath}/tests/hibernateTest">hibernate test</a></li>
+    <br>--%>
 </div>
