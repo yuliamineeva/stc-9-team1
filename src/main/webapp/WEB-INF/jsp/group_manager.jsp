@@ -6,23 +6,6 @@
 <%@ include file="aside.jsp" %>
 <div class="main">
     <div class="main_login">
-        <c:if test="${result != null}">
-            <div style="color: Red;">
-            <c:if test="${result.equals('addErr')}">
-                <b>Ошибка при добавлении группы. Проверьте корреткность введенных данных</b><br>
-                <b>Возможно, такая группа уже существует!</b>
-            </c:if>
-            <c:if test="${result.equals('editErr')}">
-                <b>Ошибка при изменении группы. Проверьте корреткность введенных данных</b><br>
-                <b>Возможно, группа с таким именем уже существует!</b>
-            </c:if>
-            <c:if test="${result.equals('delErr')}">
-                <b>Ошибка при удалении группы.</b>
-            </c:if>
-            </div>
-            <br><br>
-        </c:if>
-
         <c:if test="${act != null && act.equals('delete')}">
             <p align="center">Вы действительно хотите удалить группу с ID=${group.group_id}?
             <form name="group_delete" action="${pageContext.request.contextPath}/groups/delete" method="post">

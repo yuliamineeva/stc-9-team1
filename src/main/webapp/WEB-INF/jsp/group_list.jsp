@@ -18,7 +18,7 @@
                         <tr>
                             <td>${user.id}</td>
                             <td>${user.name}</td>
-                            <td><a href="${pageContext.request.contextPath}/group_list/manager?act=delete&groupId=${groupId}&userId=${user.id}">Удалить из группы</a></td>
+                            <td><a href="${pageContext.request.contextPath}/group_list/manager?act=delete&groupId=${group.group_id}&userId=${user.id}">Удалить из группы</a></td>
                         </tr>
                     </c:if>
                 </c:forEach>
@@ -30,7 +30,7 @@
             </c:if>
         </table>
         <p align="center">
-            <a href="${pageContext.request.contextPath}/group_list/manager?act=add&groupId=${groupId}">Добавить пользователя в группу</a>
+            <a href="${pageContext.request.contextPath}/group_list/manager?act=add&groupId=${group.group_id}">Добавить пользователя в группу</a>
         </p>
     </div>
 </div>

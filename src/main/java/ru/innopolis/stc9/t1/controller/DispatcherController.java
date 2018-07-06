@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.innopolis.stc9.t1.entities.UserH;
 import ru.innopolis.stc9.t1.pojo.Group;
 import ru.innopolis.stc9.t1.service.GroupService;
 
@@ -33,9 +32,7 @@ public class DispatcherController {
         if (groupId != null) {
             Group group = groupService.getGroupById(Integer.valueOf(groupId));
             model.addAttribute("group", group);
-            ArrayList<UserH> groupList = new ArrayList<>();
-            groupList.addAll(group.getUsers());
-            model.addAttribute("groupList", groupList);
+            model.addAttribute("groupList", group.getUsers());
         }
         return "group_list";
     }

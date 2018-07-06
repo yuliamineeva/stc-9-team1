@@ -83,7 +83,6 @@ public class UserDAOImplH implements UserDAO_H {
         Session session = factory.openSession();
         Query query = session.createQuery("FROM UserH");
         List<UserH> users = query.list();
-        session.close();
         return users;
     }
 
