@@ -1,10 +1,8 @@
 package ru.innopolis.stc9.t1.db.dao;
 
 import org.apache.log4j.Logger;
-import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -22,29 +20,35 @@ public class GroupDAOImplH implements GroupDAO{
     public GroupDAOImplH(){}
 
     public Group getGroupById(int id) {
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
+        session.beginTransaction();
         Query query = session.createQuery("from Group where group_id = :param");
         query.setParameter("param", id);
         Group group = (Group) query.list().get(0);
+        session.getTransaction().commit();
         return group;
     }
 
     public Group getGroupByName(String name) {
         if(name == null) return null;
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
+        session.beginTransaction();
         Query query = session.createQuery("from Group where name = :param");
         query.setParameter("param", name);
         if(query.list() == null || query.list().size() == 0) return null;
         Group group = (Group) query.list().get(0);
+        session.getTransaction().commit();
         return group;
     }
 
     public List<Group> getAllGroups() {
         List<Group> groups = null;
         try {
-            Session session = sessionFactory.openSession();
+            Session session = sessionFactory.getCurrentSession();
+            session.beginTransaction();
             Query query = session.createQuery("from Group");
             groups = query.list();
+            session.getTransaction().commit();
         }catch(NullPointerException e){
             logger.error("error to get all groups", e);
         }
@@ -53,7 +57,7 @@ public class GroupDAOImplH implements GroupDAO{
 
     public boolean addGroup(Group group) {
         if(group == null) return false;
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
         if(getGroupByName(group.getName()) != null) return false;
         session.beginTransaction();
         session.save(group);
@@ -67,7 +71,7 @@ public class GroupDAOImplH implements GroupDAO{
         if(group.getGroup_id() < 1)return false;
         Group findGroup = getGroupByName(group.getName());
         if(findGroup != null && findGroup.getGroup_id() != group.getGroup_id()) return false;
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
         session.beginTransaction();
         session.merge(group);
         session.getTransaction().commit();
@@ -76,7 +80,7 @@ public class GroupDAOImplH implements GroupDAO{
     }
 
     public boolean deleteGroup(int id) {
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
         session.beginTransaction();
         Group group = (Group) session.load(Group.class, id);
         session.delete(group);
