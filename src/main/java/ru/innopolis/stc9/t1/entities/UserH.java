@@ -60,7 +60,7 @@ public class UserH {
         this.name = name;
     }
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     public RoleH getRole() {
         return role;
     }
@@ -69,7 +69,7 @@ public class UserH {
         this.role = role;
     }
 
-    @OneToMany(mappedBy = "tutor", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "tutor", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     public Set<Lesson> getLessons() {
         return lessons;
     }

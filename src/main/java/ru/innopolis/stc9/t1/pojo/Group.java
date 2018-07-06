@@ -38,7 +38,7 @@ public class Group {
         this.name = name;
     }
 
-    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     public Set<Lesson> getLessons() {
         return lessons;
     }

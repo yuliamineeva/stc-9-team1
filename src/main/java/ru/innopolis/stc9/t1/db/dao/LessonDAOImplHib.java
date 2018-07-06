@@ -5,8 +5,6 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
-import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
@@ -17,6 +15,7 @@ import ru.innopolis.stc9.t1.pojo.Lesson;
 
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Repository
 @Primary
@@ -25,9 +24,6 @@ public class LessonDAOImplHib implements LessonDAO {
 
     @Autowired
     private SessionFactory sessionFactory;
-
-//    public LessonDAOImplHib() {
-//    }
 
     @Override
     public boolean addLesson(Lesson lesson) {
@@ -84,46 +80,35 @@ public class LessonDAOImplHib implements LessonDAO {
         return lessons;
     }
 
-
     @Override
     public List<Lesson> getLessonsByGroup(int group_id) {
-        List<Lesson> lessonsByGroup = null;
-        try {
-            Session session = sessionFactory.openSession();
-            Criteria criteria = session.createCriteria(Lesson.class);
-            criteria.add(Restrictions.eq("group_id", group_id));
-            if (criteria.list() == null || criteria.list().size() == 0) return null;
-            lessonsByGroup = criteria.list();
-
-//            NativeQuery query = session.createNativeQuery("SELECT l.* FROM public.lessons_h l where l.group_id='" + group_id + "'");
-//            query.addEntity(Lesson.class);
-//            lessonsByGroup = query.list();
-            session.close();
-        } catch (HibernateException e) {
-            logger.error("error to get lessons by group", e);
-        }
-        return lessonsByGroup;
+        Session session = sessionFactory.openSession();
+        Query query = session.createQuery("from Lesson where group.group_id = ?");
+        query.setParameter(0, group_id);
+        List<Lesson> lessonsByGroup = query.list();
+        session.close();
+        return lessonsByGroup.size() == 0 ? null : lessonsByGroup;
     }
 
     @Override
     public List<Lesson> getLessonsByTutor(int tutor_id) {
         Session session = sessionFactory.openSession();
-        NativeQuery query = session.createNativeQuery("SELECT l.* FROM public.lessons_h l where l.tutor_id='" + tutor_id + "'");
-        query.addEntity(Lesson.class);
+        Query query = session.createQuery("from Lesson where tutor.id = ?");
+        query.setParameter(0, tutor_id);
         List<Lesson> lessonsByTutor = query.list();
         session.close();
-        return lessonsByTutor;
+        return lessonsByTutor.size() == 0 ? null : lessonsByTutor;
     }
 
     @Override
     public List<Lesson> getLessonsByDate(Date date) {
         Session session = sessionFactory.openSession();
-        java.sql.Date sqlDate = new java.sql.Date(date.getTime());
-        List<Lesson> lessonsByDate = session.createCriteria(Lesson.class)
-                .add(Restrictions.sqlRestriction("WHERE DATE(lessons.date) = '" + sqlDate + "'" + "INTERVAL 1 DAY"))
-                .list();
+        java.sql.Date sqlDate = new java.sql.Date(date.getTime() + TimeUnit.DAYS.toMillis(1));
+        Query query = session.createQuery("from Lesson where date = ?");
+        query.setParameter(0, sqlDate);
+        List<Lesson> lessonsByDate = query.list();
         session.close();
-        return lessonsByDate;
+        return lessonsByDate.size() == 0 ? null : lessonsByDate;
     }
 
     @Override

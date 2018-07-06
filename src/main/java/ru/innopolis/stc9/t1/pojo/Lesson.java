@@ -11,17 +11,24 @@ public class Lesson {
     private int lsn_id;
     private String topic;
     private Date date;
+    private Date time;
     private Group group;
     private UserH tutor;
 
     public Lesson() {
     }
 
-    public Lesson(String topic, Date date, Group group, UserH tutor) {
+    public Lesson(String topic, Date date, Date time, Group group, UserH tutor) {
         this.topic = topic;
         this.date = date;
+        this.time = time;
         this.group = group;
         this.tutor = tutor;
+    }
+
+    public Lesson(int lsn_id, String topic, Date date, Date time, Group group, UserH tutor) {
+        this(topic, date, time, group, tutor);
+        this.lsn_id = lsn_id;
     }
 
     @Id
@@ -53,7 +60,17 @@ public class Lesson {
         this.date = date;
     }
 
-    @ManyToOne(optional = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Temporal(TemporalType.TIME)
+    @Column(name = "time")
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
+    }
+
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     public Group getGroup() {
         return group;
     }
@@ -62,7 +79,7 @@ public class Lesson {
         this.group = group;
     }
 
-    @ManyToOne(optional = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     public UserH getTutor() {
         return tutor;
     }
@@ -77,6 +94,7 @@ public class Lesson {
                 "lsn_id=" + lsn_id +
                 ", topic='" + topic + '\'' +
                 ", date=" + date +
+                ", time=" + time +
                 ", group=" + group +
                 ", tutor=" + tutor +
                 '}';

@@ -75,9 +75,9 @@ public class LessonController {
 
     @RequestMapping(value = "/lessons_add", method = RequestMethod.GET)
     public String addLesson(Model model) {
-        Lesson lesson = new Lesson();
-        lessonService.addLesson(lesson);
-        model.addAttribute("lesson", lessonService.getLessonById(lesson.getLsn_id()));
+//        Lesson lesson = new Lesson();
+//        lessonService.addLesson(lesson);
+//        model.addAttribute("lesson", lessonService.getLessonById(lesson.getLsn_id()));
         return "lessons/lessons_add";
     }
 
@@ -88,8 +88,29 @@ public class LessonController {
         return "lessons/lessons_edit";
     }
 
-    @RequestMapping("/lessons_delete")
-    public String deleteLesson() {
+    @RequestMapping(value = "/lessons_delete", method = RequestMethod.GET)
+    public String getDeleteLessonPage(
+            @RequestParam(value = "lesson_id", required = false) String lesson_id, Model model) {
+        if (lesson_id != null) {
+            Lesson deleteLesson = lessonService.getLessonById(Integer.valueOf(lesson_id));
+            model.addAttribute("deleteLesson", deleteLesson);
+        }
+        return "lessons/lessons_delete";
+    }
+
+    @RequestMapping(value = "/lessons_delete", method = RequestMethod.POST)
+    public String deleteLesson(@RequestParam(value = "lessonId", required = false) String lessonId, Model model) {
+        if (lessonId != null) {
+            boolean result = lessonService.deleteLessonById(Integer.valueOf(lessonId));
+            model.addAttribute("lessonId", lessonId);
+            if (result) {
+                model.addAttribute("message", "successfully");
+            } else {
+                model.addAttribute("message", "errDeleteLesson");
+            }
+        }
+        List<Lesson> lessons = lessonService.getAllLessons();
+        model.addAttribute("lessons", lessons);
         return "lessons/lessons_delete";
     }
 }
