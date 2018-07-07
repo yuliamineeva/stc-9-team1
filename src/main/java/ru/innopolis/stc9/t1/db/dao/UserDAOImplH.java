@@ -30,9 +30,9 @@ public class UserDAOImplH implements UserDAO_H {
         Session session = factory.openSession();
         Query query = session.createQuery("FROM RoleH WHERE role_int = ?");
         query.setParameter(0, roleInt);
-        RoleH role = (RoleH) query.list().get(0);
+        List<RoleH> roles = query.list();
         session.close();
-        return role;
+        return roles.size() == 0 ? null : roles.get(0);
     }
 
     @Override
@@ -47,13 +47,12 @@ public class UserDAOImplH implements UserDAO_H {
 
     @Override
     public UserH getUserByLogin(String login) throws HibernateException {
-        UserH user;
         Session session = factory.openSession();
         Query query = session.createQuery("FROM UserH WHERE login = ?");
         query.setParameter(0, login);
-        user = (UserH) query.list().get(0);
+        List<UserH> users = query.list();
         session.close();
-        return user;
+        return users.size() == 0 ? null : users.get(0);
     }
 
     @Override
@@ -68,9 +67,9 @@ public class UserDAOImplH implements UserDAO_H {
     }
 
     @Override
-    public void updateUserPasswordByLogin(String login, String password) throws HibernateException {
+    public void updateUserPasswordByLogin(String login, String newHashPassword) throws HibernateException {
         UserH user = getUserByLogin(login);
-        user.setPassword(password);
+        user.setPassword(newHashPassword);
         Session session = factory.openSession();
         session.beginTransaction();
         session.update(user);
@@ -82,6 +81,16 @@ public class UserDAOImplH implements UserDAO_H {
     public List<UserH> getAllUsers() throws HibernateException {
         Session session = factory.openSession();
         Query query = session.createQuery("FROM UserH");
+        List<UserH> users = query.list();
+        session.close();
+        return users;
+    }
+
+    @Override
+    public List<UserH> getAllUsersByType(int type) {
+        Session session = factory.openSession();
+        Query query = session.createQuery("from UserH where role.role_int = ?");
+        query.setParameter(0, type);
         List<UserH> users = query.list();
         session.close();
         return users;

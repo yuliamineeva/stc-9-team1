@@ -1,9 +1,9 @@
 package ru.innopolis.stc9.t1.service;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.innopolis.stc9.t1.db.dao.LessonDAO;
-import ru.innopolis.stc9.t1.db.dao.LessonDAOImpl;
 import ru.innopolis.stc9.t1.pojo.Lesson;
 
 import java.text.ParseException;
@@ -16,14 +16,11 @@ import java.util.Set;
 @Service
 public class LessonService {
     private final static Logger logger = Logger.getLogger(LessonService.class);
+
+    @Autowired
     private LessonDAO lessonDAO;
 
     public LessonService() {
-        lessonDAO = new LessonDAOImpl();
-    }
-
-    public LessonService(LessonDAO lessonDAO) {
-        this.lessonDAO = lessonDAO;
     }
 
     public boolean addLesson(Lesson lesson) {
@@ -35,7 +32,8 @@ public class LessonService {
     }
 
     public List<Lesson> getAllLessons() {
-        return lessonDAO.getAllLessons();
+        List<Lesson> lessonsFromDAO = lessonDAO.getAllLessons();
+        return lessonsFromDAO;
     }
 
     public List<Lesson> getLessonsByGroup(int group_id) {
@@ -67,7 +65,6 @@ public class LessonService {
 
     /**
      * Получить список всех дат, в которые были лекции
-     *
      * @return List<Date>
      */
     public Set<Date> getAllDatesFromLessons() {
@@ -76,9 +73,9 @@ public class LessonService {
         for (Lesson lesson : lessons) {
             Date date = lesson.getDate();
             dates.add(date);
-            System.out.println(date);
         }
         return dates;
     }
+
 
 }
