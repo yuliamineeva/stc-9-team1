@@ -28,7 +28,7 @@ public class UserDAOImplH implements UserDAO_H {
     @Override
     public RoleH getRoleInt(int roleInt) throws HibernateException {
         Session session = factory.openSession();
-        Query query = session.createQuery("FROM RoleH WHERE role_int = ?");
+        Query query = session.createQuery("from RoleH WHERE role_int = ?");
         query.setParameter(0, roleInt);
         RoleH role = (RoleH) query.list().get(0);
         session.close();
@@ -49,7 +49,7 @@ public class UserDAOImplH implements UserDAO_H {
     public UserH getUserByLogin(String login) throws HibernateException {
         UserH user;
         Session session = factory.openSession();
-        Query query = session.createQuery("FROM UserH WHERE login = ?");
+        Query query = session.createQuery("from UserH WHERE login = ?");
         query.setParameter(0, login);
         user = (UserH) query.list().get(0);
         session.close();
@@ -81,7 +81,17 @@ public class UserDAOImplH implements UserDAO_H {
     @Override
     public List<UserH> getAllUsers() throws HibernateException {
         Session session = factory.openSession();
-        Query query = session.createQuery("FROM UserH");
+        Query query = session.createQuery("from UserH");
+        List<UserH> users = query.list();
+        session.close();
+        return users;
+    }
+
+    @Override
+    public List<UserH> getAllUsersByType(int type) {
+        Session session = factory.openSession();
+        Query query = session.createQuery("from UserH where role.role_int = ?");
+        query.setParameter(0, type);
         List<UserH> users = query.list();
         session.close();
         return users;

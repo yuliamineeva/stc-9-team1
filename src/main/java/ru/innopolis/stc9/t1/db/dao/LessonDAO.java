@@ -1,5 +1,7 @@
 package ru.innopolis.stc9.t1.db.dao;
 
+import ru.innopolis.stc9.t1.entities.UserH;
+import ru.innopolis.stc9.t1.pojo.Group;
 import ru.innopolis.stc9.t1.pojo.Lesson;
 
 import java.util.Date;
@@ -10,6 +12,10 @@ public interface LessonDAO {
     boolean addLesson(Lesson lesson);
 
     Lesson getLessonById(int id);
+
+    Group getGroupById(int id);
+
+    UserH getTutorById(int id);
 
     List<Lesson> getAllLessons();
 
