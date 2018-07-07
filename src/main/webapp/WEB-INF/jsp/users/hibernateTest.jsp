@@ -5,8 +5,8 @@
 
 <div class="main">
     <div class="main_content_30">
-        <a href="./fillRoles">Fill roles DB</a>
-        <a href="./addIven">Add Iven Ivens</a><br>
+        <%--<a href="./fillRoles">Fill roles DB</a>
+        <a href="./addIven">Add Iven Ivens</a><br>--%>
         <a href="./getAllUsersAndRoles">Show all users and roles</a><br>
     </div>
 </div>

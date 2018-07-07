@@ -57,7 +57,7 @@ public class RoleH {
         this.role_description = role_description;
     }
 
-    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     public Set<UserH> getUsers() {
         return users;
     }

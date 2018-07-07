@@ -1,6 +1,7 @@
 package ru.innopolis.stc9.t1.pojo;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "groups_h")
@@ -8,6 +9,7 @@ public class Group {
 
     private int group_id;
     private String name;
+    private Set<Lesson> lessons;
 
     public Group() {
     }
@@ -34,5 +36,19 @@ public class Group {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    public Set<Lesson> getLessons() {
+        return lessons;
+    }
+
+    public void setLessons(Set<Lesson> lessons) {
+        this.lessons = lessons;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

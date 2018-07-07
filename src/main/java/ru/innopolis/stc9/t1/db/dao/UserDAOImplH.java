@@ -18,70 +18,59 @@ public class UserDAOImplH implements UserDAO_H {
 
     @Override
     public void addUser(UserH user) throws HibernateException {
-        Session session = factory.openSession();
-        session.beginTransaction();
-        session.save(user);
-        session.getTransaction().commit();
-        session.close();
+        factory.getCurrentSession().save(user);
     }
 
     @Override
     public RoleH getRoleInt(int roleInt) throws HibernateException {
-        Session session = factory.openSession();
-        Query query = session.createQuery("FROM RoleH WHERE role_int = ?");
-        query.setParameter(0, roleInt);
-        RoleH role = (RoleH) query.list().get(0);
-        session.close();
-        return role;
+        List roles = factory.getCurrentSession().
+                createQuery("FROM RoleH WHERE role_int = ?").
+                setParameter(0, roleInt).
+                list();
+        return roles.size() == 0 ? null : (RoleH) roles.get(0);
     }
 
     @Override
     public UserH getUser(int userId) throws HibernateException {
-        Session session = factory.openSession();
-        session.beginTransaction();
-        UserH user = session.get(UserH.class, userId);
-        session.getTransaction().commit();
-        session.close();
-        return user;
+        return factory.getCurrentSession().get(UserH.class, userId);
     }
 
     @Override
     public UserH getUserByLogin(String login) throws HibernateException {
-        UserH user;
-        Session session = factory.openSession();
-        Query query = session.createQuery("FROM UserH WHERE login = ?");
-        query.setParameter(0, login);
-        user = (UserH) query.list().get(0);
-        session.close();
-        return user;
+        List users = factory.getCurrentSession().
+                createQuery("FROM UserH WHERE login = ?").
+                setParameter(0, login).
+                list();
+        return users.size() == 0 ? null : (UserH) users.get(0);
     }
 
     @Override
     public void updateUserNameByLogin(String login, String name) throws HibernateException {
         UserH user = getUserByLogin(login);
         user.setName(name);
-        Session session = factory.openSession();
-        session.beginTransaction();
-        session.update(user);
-        session.getTransaction().commit();
-        session.close();
+        factory.getCurrentSession().update(user);
     }
 
     @Override
-    public void updateUserPasswordByLogin(String login, String password) throws HibernateException {
+    public void updateUserPasswordByLogin(String login, String newHashPassword) throws HibernateException {
         UserH user = getUserByLogin(login);
-        user.setPassword(password);
-        Session session = factory.openSession();
-        session.beginTransaction();
-        session.update(user);
-        session.getTransaction().commit();
-        session.close();
+        user.setPassword(newHashPassword);
+        factory.getCurrentSession().update(user);
     }
 
     @Override
     public List<UserH> getAllUsers() throws HibernateException {
+        @SuppressWarnings("unchecked")
+        List<UserH> users = factory.getCurrentSession().createQuery("FROM UserH").list();
+        return users;
+    }
+
+    @Override
+    public List<UserH> getAllUsersByType(int type) {
         Session session = factory.openSession();
-        Query query = session.createQuery("FROM UserH");
+        Query query = session.createQuery("from UserH where role.role_int = ?");
+        query.setParameter(0, type);
+        @SuppressWarnings("unchecked")
         List<UserH> users = query.list();
         session.close();
         return users;
@@ -92,21 +81,13 @@ public class UserDAOImplH implements UserDAO_H {
         UserH user = getUser(userId);
         RoleH role = getRoleInt(newRoleInt);
         user.setRole(role);
-        Session session = factory.openSession();
-        session.beginTransaction();
-        session.update(user);
-        session.getTransaction().commit();
-        session.close();
+        factory.getCurrentSession().update(user);
     }
 
     @Override
     public void deleteUser(int userId) throws HibernateException {
         UserH user = getUser(userId);
-        Session session = factory.openSession();
-        session.beginTransaction();
-        session.delete(user);
-        session.getTransaction().commit();
-        session.close();
+        factory.getCurrentSession().delete(user);
     }
 
 }

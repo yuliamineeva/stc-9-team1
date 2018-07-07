@@ -2,6 +2,7 @@ package ru.innopolis.stc9.t1.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.innopolis.stc9.t1.db.connection.CryptoUtils;
 import ru.innopolis.stc9.t1.db.dao.TestUserDAO;
 import ru.innopolis.stc9.t1.entities.RoleH;
@@ -10,7 +11,7 @@ import ru.innopolis.stc9.t1.entities.UserH;
 import java.util.List;
 
 @Service
-//@Transactional
+@Transactional
 public class TestUserService {
     @Autowired
     private TestUserDAO testUserDAO;
