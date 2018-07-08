@@ -2,17 +2,14 @@ package ru.innopolis.stc9.t1.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.innopolis.stc9.t1.entities.RoleH;
-import ru.innopolis.stc9.t1.entities.UserH;
 import ru.innopolis.stc9.t1.service.TestUserService;
 
 import java.util.List;
 
 @Controller
-@Transactional
 public class UserHibernateTestController {
 
     @Autowired
@@ -25,9 +22,9 @@ public class UserHibernateTestController {
 
     @RequestMapping("/tests/getAllUsersAndRoles")
     public String getAllUsersAndRoles(Model model) {
-        List<UserH> users = testUserService.getAllUsers();
+//        List<UserH> users = testUserService.getAllUsers();
         List<RoleH> roles = testUserService.getAllRoles();
-        model.addAttribute("users", users);
+//        model.addAttribute("users", users);
         model.addAttribute("roles", roles);
         return "users/hibernateTestResult";
     }

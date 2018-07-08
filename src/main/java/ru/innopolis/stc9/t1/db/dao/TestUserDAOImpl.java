@@ -1,6 +1,5 @@
 package ru.innopolis.stc9.t1.db.dao;
 
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -27,15 +26,10 @@ public class TestUserDAOImpl implements TestUserDAO {
 
     @Override
     public List<RoleH> getAllRoles() {
-        List<RoleH> roles = null;
-        try {
-            Session session = factory.openSession();
-            Query query = session.createQuery("FROM RoleH");
-            roles = query.list();
-            //roles=factory.getCurrentSession().createQuery("FROM RoleH").list();
-        } catch (HibernateException e) {
-
-        }
+        /*Session session = factory.openSession();
+        Query query = session.createQuery("FROM RoleH");
+        List<RoleH> roles = query.list();*/
+        List<RoleH> roles = factory.getCurrentSession().createQuery("FROM RoleH").list();
         return roles;
     }
 

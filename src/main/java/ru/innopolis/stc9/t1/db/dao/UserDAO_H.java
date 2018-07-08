@@ -1,29 +1,28 @@
 package ru.innopolis.stc9.t1.db.dao;
 
-import org.hibernate.HibernateException;
 import ru.innopolis.stc9.t1.entities.RoleH;
 import ru.innopolis.stc9.t1.entities.UserH;
 
 import java.util.List;
 
 public interface UserDAO_H {
-    void addUser(UserH user) throws HibernateException;
+    void addUser(UserH user);
 
-    RoleH getRoleInt(int roleInt) throws HibernateException;
+    RoleH getRoleInt(int roleInt);
 
-    UserH getUser(int userId) throws HibernateException;
+    UserH getUser(int userId);
 
-    UserH getUserByLogin(String login) throws HibernateException;
+    UserH getUserByLogin(String login);
 
-    void updateUserNameByLogin(String login, String name) throws HibernateException;
+    void updateUserNameByLogin(String login, String name);
 
-    void updateUserPasswordByLogin(String password, String name) throws HibernateException;
+    void updateUserPasswordByLogin(String password, String name);
 
-    List<UserH> getAllUsers() throws HibernateException;
+    List<UserH> getAllUsers();
 
     List<UserH> getAllUsersByType(int type);
 
-    void updateUserRole(int userId, int newRoleInt) throws HibernateException;
+    void updateUserRole(int userId, int newRoleInt);
 
-    void deleteUser(int userId) throws HibernateException;
+    void deleteUser(int userId);
 }
