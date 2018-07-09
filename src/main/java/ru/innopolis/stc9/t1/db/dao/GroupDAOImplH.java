@@ -19,73 +19,53 @@ public class GroupDAOImplH implements GroupDAO{
 
     public GroupDAOImplH(){}
 
+    @Override
     public Group getGroupById(int id) {
-        Session session = sessionFactory.getCurrentSession();
-        session.beginTransaction();
-        Query query = session.createQuery("from Group where group_id = :param");
-        query.setParameter("param", id);
-        Group group = (Group) query.list().get(0);
-        session.getTransaction().commit();
+        Group group = sessionFactory.getCurrentSession().get(Group.class, id);
         return group;
     }
 
+    @Override
     public Group getGroupByName(String name) {
         if(name == null) return null;
         Session session = sessionFactory.getCurrentSession();
-        session.beginTransaction();
         Query query = session.createQuery("from Group where name = :param");
         query.setParameter("param", name);
         if(query.list() == null || query.list().size() == 0) return null;
         Group group = (Group) query.list().get(0);
-        session.getTransaction().commit();
         return group;
     }
 
+    @Override
     public List<Group> getAllGroups() {
-        List<Group> groups = null;
-        try {
-            Session session = sessionFactory.getCurrentSession();
-            session.beginTransaction();
-            Query query = session.createQuery("from Group");
-            groups = query.list();
-            session.getTransaction().commit();
-        }catch(NullPointerException e){
-            logger.error("error to get all groups", e);
-        }
+        List<Group> groups = sessionFactory.getCurrentSession().createQuery("from Group").list();
         return groups;
     }
 
+    @Override
     public boolean addGroup(Group group) {
         if(group == null) return false;
         Session session = sessionFactory.getCurrentSession();
         if(getGroupByName(group.getName()) != null) return false;
-        session.beginTransaction();
         session.save(group);
-        session.getTransaction().commit();
-        session.close();
         return true;
     }
 
+    @Override
     public boolean updateGroup(Group group){
         if(group == null) return false;
-        if(group.getGroup_id() < 1)return false;
         Group findGroup = getGroupByName(group.getName());
         if(findGroup != null && findGroup.getGroup_id() != group.getGroup_id()) return false;
         Session session = sessionFactory.getCurrentSession();
-        session.beginTransaction();
         session.merge(group);
-        session.getTransaction().commit();
-        session.close();
         return true;
     }
 
+    @Override
     public boolean deleteGroup(int id) {
         Session session = sessionFactory.getCurrentSession();
-        session.beginTransaction();
         Group group = (Group) session.load(Group.class, id);
         session.delete(group);
-        session.getTransaction().commit();
-        session.close();
         return true;
     }
 

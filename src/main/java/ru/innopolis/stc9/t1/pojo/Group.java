@@ -43,7 +43,7 @@ public class Group {
         this.name = name;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "groups_users",
             joinColumns = @JoinColumn(name = "group_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
@@ -53,6 +53,10 @@ public class Group {
 
     public void setUsers(Set<UserH> users) {
         this.users = users;
+    }
+
+    public void addUser(UserH user) {
+        users.add(user);
     }
 
     @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
@@ -67,10 +71,6 @@ public class Group {
     @Override
     public String toString() {
         return name;
-    }
-        
-    public void addUser(UserH user) {
-        users.add(user);
     }
 
     @Override

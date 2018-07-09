@@ -71,14 +71,6 @@ public class UserH {
     public void setRole(RoleH role) {
         this.role = role;
     }
-
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "groups_users",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "group_id"))
-    public Set<Group> getGroups() {
-        return groups;
-    }
     
     @OneToMany(mappedBy = "tutor", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     public Set<Lesson> getLessons() {
@@ -87,6 +79,15 @@ public class UserH {
 
     public void setLessons(Set<Lesson> lessons) {
         this.lessons = lessons;
+    }
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "groups_users",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "group_id"))
+    public Set<Group> getGroups() {
+        return groups;
+    }
 
     public void setGroups(Set<Group> groups) {
         this.groups = groups;
