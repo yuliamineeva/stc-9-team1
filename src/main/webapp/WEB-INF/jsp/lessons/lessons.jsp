@@ -89,7 +89,8 @@
                         <td align="left">${lesson.getTutor().getName()}</td>
                         <sec:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')">
                             <td align="center"><a
-                                    href="${pageContext.request.contextPath}/lessons_edit">Редактировать</a></td>
+                                    href="${pageContext.request.contextPath}/lessons_edit?lesson_id=${lesson.getLsn_id()}">Редактировать</a>
+                            </td>
                             <td align="center"><a
                                     href="${pageContext.request.contextPath}/lessons_delete?lesson_id=${lesson.getLsn_id()}">Удалить</a>
                             </td>

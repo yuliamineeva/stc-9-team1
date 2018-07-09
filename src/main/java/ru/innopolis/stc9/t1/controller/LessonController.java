@@ -14,6 +14,9 @@ import ru.innopolis.stc9.t1.service.GroupService;
 import ru.innopolis.stc9.t1.service.LessonService;
 import ru.innopolis.stc9.t1.service.UserServiceH;
 
+import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -74,19 +77,93 @@ public class LessonController {
 
 
     @RequestMapping(value = "/lessons_add", method = RequestMethod.GET)
-    public String addLesson(Model model) {
-//        Lesson lesson = new Lesson();
-//        lessonService.addLesson(lesson);
-//        model.addAttribute("lesson", lessonService.getLessonById(lesson.getLsn_id()));
+    public String addLessonPage(Model model) {
+        ArrayList<Group> allGroups = groupService.getAllGroups();
+        List<UserH> allTutors = userService.getAllUsersByType(1);
+        model.addAttribute("allGroups", allGroups);
+        model.addAttribute("allTutors", allTutors);
+        return "lessons/lessons_add";
+    }
+
+    @RequestMapping(value = "/lessons_add", method = RequestMethod.POST)
+    public String addLesson(@RequestParam(value = "lessonTopic", required = false) String lessonTopic,
+                            @RequestParam(value = "lessonDate", required = false) String lessonDate,
+//                            @RequestParam(value = "lessonDate", required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date lessonDate,
+                            @RequestParam(value = "lessonTime", required = false) Time lessonTime,
+                            @RequestParam(value = "lessonGroup", required = false) String lessonGroup,
+                            @RequestParam(value = "lessonTutor", required = false) String lessonTutor, Model model) {
+        ArrayList<Group> allGroups = groupService.getAllGroups();
+        List<UserH> allTutors = userService.getAllUsersByType(1);
+        model.addAttribute("allGroups", allGroups);
+        model.addAttribute("allTutors", allTutors);
+        if (lessonTopic.isEmpty() || lessonGroup == null || lessonTutor == null) {
+            model.addAttribute("message", "EmptyField");
+        } else {
+            Group group = groupService.getGroupById(Integer.parseInt(lessonGroup));
+            UserH tutor = userService.getUser(Integer.parseInt(lessonTutor));
+            Date date = new Date();
+            try {
+                date = new SimpleDateFormat("yyyy-MM-dd").parse(lessonDate);
+                date = new Date(date.getTime() + 24 * 60 * 60 * 1000);
+            } catch (ParseException e) {
+                logger.error("error to parse date", e);
+            }
+            boolean result = lessonService.addLesson(new Lesson(lessonTopic, date, lessonTime, group, tutor));
+            if (result) {
+                return getLessons("all", "all", "all", model);
+            } else {
+                model.addAttribute("message", "errAddLesson");
+            }
+        }
         return "lessons/lessons_add";
     }
 
     @RequestMapping(value = "/lessons_edit", method = RequestMethod.GET)
-    public String editLesson(Model model) {
-        Lesson lesson = lessonService.getLessonById(1);
-        model.addAttribute("lesson", lesson);
+    public String editLessonPage(@RequestParam(value = "lesson_id", required = false) String lesson_id, Model model) {
+        ArrayList<Group> allGroups = groupService.getAllGroups();
+        List<UserH> allTutors = userService.getAllUsersByType(1);
+        model.addAttribute("allGroups", allGroups);
+        model.addAttribute("allTutors", allTutors);
+        if (lesson_id != null) {
+            model.addAttribute("lesson", lessonService.getLessonById(Integer.valueOf(lesson_id)));
+        }
         return "lessons/lessons_edit";
     }
+
+    @RequestMapping(value = "/lessons_edit", method = RequestMethod.POST)
+    public String editLesson(@RequestParam(value = "lessonTopic", required = false) String lessonTopic,
+                             @RequestParam(value = "lessonId", required = false) String lessonId,
+                             @RequestParam(value = "lessonDate", required = false) String lessonDate,
+                             @RequestParam(value = "lessonTime", required = false) Time lessonTime,
+                             @RequestParam(value = "lessonGroup", required = false) String lessonGroup,
+                             @RequestParam(value = "lessonTutor", required = false) String lessonTutor, Model model) {
+        ArrayList<Group> allGroups = groupService.getAllGroups();
+        List<UserH> allTutors = userService.getAllUsersByType(1);
+        model.addAttribute("allGroups", allGroups);
+        model.addAttribute("allTutors", allTutors);
+        if (lessonTopic.isEmpty() || lessonGroup == null || lessonTutor == null || lessonTime == null) {
+            model.addAttribute("message", "EmptyField");
+            model.addAttribute("lesson", lessonService.getLessonById(Integer.valueOf(lessonId)));
+        } else {
+            Group group = groupService.getGroupById(Integer.parseInt(lessonGroup));
+            UserH tutor = userService.getUser(Integer.parseInt(lessonTutor));
+            Date date = new Date();
+            try {
+                date = new SimpleDateFormat("yyyy-MM-dd").parse(lessonDate);
+                date = new Date(date.getTime() + 24 * 60 * 60 * 1000);
+            } catch (ParseException e) {
+                logger.error("error to parse date", e);
+            }
+            boolean result = lessonService.updateLesson(new Lesson(Integer.parseInt(lessonId), lessonTopic, date, lessonTime, group, tutor));
+            if (result) {
+                return getLessons("all", "all", "all", model);
+            } else {
+                model.addAttribute("message", "errEditLesson");
+            }
+        }
+        return "lessons/lessons_edit";
+    }
+
 
     @RequestMapping(value = "/lessons_delete", method = RequestMethod.GET)
     public String getDeleteLessonPage(
