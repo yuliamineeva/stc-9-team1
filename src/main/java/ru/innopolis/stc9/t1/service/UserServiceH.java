@@ -2,6 +2,7 @@ package ru.innopolis.stc9.t1.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.innopolis.stc9.t1.ErrorMsgHandler;
 import ru.innopolis.stc9.t1.db.connection.CryptoUtils;
 import ru.innopolis.stc9.t1.db.dao.UserDAO_H;
@@ -13,19 +14,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 public class UserServiceH {
     @Autowired
     private UserDAO_H userDAO;
 
     public void addUser(String login, String pass, String name) {
         try {
-            String HashPassword = CryptoUtils.computeHashPassword(pass);
-            UserH user = new UserH(login, HashPassword, name);
+            String hashPassword = CryptoUtils.computeHashPassword(pass);
+            UserH user = new UserH(login, hashPassword, name);
             RoleH role = userDAO.getRoleInt(2);
             user.setRole(role);
             userDAO.addUser(user);
         } catch (Exception e) {
-            ErrorMsgHandler.setMessage("add User", e);
+            ErrorMsgHandler.setMessage("error while adding user", e);
         }
     }
 
@@ -34,7 +36,7 @@ public class UserServiceH {
         try {
             user = userDAO.getUser(userId);
         } catch (Exception e) {
-            ErrorMsgHandler.setMessage("get User by id", e);
+            ErrorMsgHandler.setMessage("error while getting User by id", e);
         }
         return user;
     }
@@ -44,7 +46,7 @@ public class UserServiceH {
         try {
             user = userDAO.getUserByLogin(login);
         } catch (Exception e) {
-            ErrorMsgHandler.setMessage("get User by login", e);
+            ErrorMsgHandler.setMessage("error while getting User by login", e);
         }
         return user;
     }
@@ -53,15 +55,16 @@ public class UserServiceH {
         try {
             userDAO.updateUserNameByLogin(login, name);
         } catch (Exception e) {
-            ErrorMsgHandler.setMessage("update UserName by login", e);
+            ErrorMsgHandler.setMessage("error while updating UserName by login", e);
         }
     }
 
-    public void updateUserPasswordByLogin(String login, String password) {
+    public void updateUserPasswordByLogin(String login, String newPassword) {
         try {
-            userDAO.updateUserPasswordByLogin(login, password);
+            String hashPassword = CryptoUtils.computeHashPassword(newPassword);
+            userDAO.updateUserPasswordByLogin(login, hashPassword);
         } catch (Exception e) {
-            ErrorMsgHandler.setMessage("update password by login", e);
+            ErrorMsgHandler.setMessage("error while updating password by login", e);
         }
     }
 
@@ -70,8 +73,14 @@ public class UserServiceH {
         try {
             users = userDAO.getAllUsers();
         } catch (Exception e) {
-            ErrorMsgHandler.setMessage("get all users", e);
+            ErrorMsgHandler.setMessage("error while getting all users", e);
         }
+        return users;
+    }
+
+
+    public List<UserH> getAllUsersByType(int type) {
+        List<UserH> users = userDAO.getAllUsersByType(type);
         return users;
     }
 
@@ -79,7 +88,7 @@ public class UserServiceH {
         try {
             userDAO.updateUserRole(userId, newRoleInt);
         } catch (Exception e) {
-            ErrorMsgHandler.setMessage("update role", e);
+            ErrorMsgHandler.setMessage("error while updating role", e);
         }
     }
 
@@ -87,7 +96,7 @@ public class UserServiceH {
         try {
             userDAO.deleteUser(userId);
         } catch (Exception e) {
-            ErrorMsgHandler.setMessage("delete user", e);
+            ErrorMsgHandler.setMessage("error while deleting user", e);
         }
     }
 

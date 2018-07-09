@@ -68,8 +68,9 @@
         <table border="1" cellspacing="0" cellpadding="3" align="center">
             <tr>
                 <th>ID лекции</th>
-                <th> Топик</th>
+                <th>Топик</th>
                 <th>Дата</th>
+                <th>Время лекции</th>
                 <th>Название группы</th>
                 <th>ФИО лектора</th>
                 <sec:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')">
@@ -83,12 +84,15 @@
                         <td align="center">${lesson.getLsn_id()}</td>
                         <td align="left">${lesson.getTopic()}</td>
                         <td align="center">${lesson.getDate()}</td>
-                        <td align="left">${lesson.getGroup_name()}</td>
-                        <td align="left">${lesson.getTutor_name()}</td>
+                        <td align="center">${lesson.getTime()}</td>
+                        <td align="left">${lesson.getGroup().getName()}</td>
+                        <td align="left">${lesson.getTutor().getName()}</td>
                         <sec:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')">
                             <td align="center"><a
-                                    href="${pageContext.request.contextPath}/lessons_edit">Редактировать</a></td>
-                            <td align="center"><a href="${pageContext.request.contextPath}/lessons_delete">Удалить</a>
+                                    href="${pageContext.request.contextPath}/lessons_edit?lesson_id=${lesson.getLsn_id()}">Редактировать</a>
+                            </td>
+                            <td align="center"><a
+                                    href="${pageContext.request.contextPath}/lessons_delete?lesson_id=${lesson.getLsn_id()}">Удалить</a>
                             </td>
                         </sec:authorize>
                     </tr>
@@ -101,12 +105,14 @@
                         <td align="center">${lesson.getLsn_id()}</td>
                         <td align="left">${lesson.getTopic()}</td>
                         <td align="center">${lesson.getDate()}</td>
-                        <td align="left">${lesson.getGroup_name()}</td>
-                        <td align="left">${lesson.getTutor_name()}</td>
+                        <td align="center">${lesson.getTime()}</td>
+                        <td align="left">${lesson.getGroup().getName()}</td>
+                        <td align="left">${lesson.getTutor().getName()}</td>
                         <sec:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')">
                             <td align="center"><a
                                     href="${pageContext.request.contextPath}/lessons_edit">Редактировать</a></td>
-                            <td align="center"><a href="${pageContext.request.contextPath}/lessons_delete">Удалить</a>
+                            <td align="center"><a
+                                    href="${pageContext.request.contextPath}/lessons_delete?lesson_id=${lesson.getLsn_id()}">Удалить</a>
                             </td>
                         </sec:authorize>
                     </tr>
@@ -119,12 +125,14 @@
                         <td align="center">${lesson.getLsn_id()}</td>
                         <td align="left">${lesson.getTopic()}</td>
                         <td align="center">${lesson.getDate()}</td>
-                        <td align="left">${lesson.getGroup_name()}</td>
-                        <td align="left">${lesson.getTutor_name()}</td>
+                        <td align="center">${lesson.getTime()}</td>
+                        <td align="left">${lesson.getGroup().getName()}</td>
+                        <td align="left">${lesson.getTutor().getName()}</td>
                         <sec:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')">
                             <td align="center"><a
                                     href="${pageContext.request.contextPath}/lessons_edit">Редактировать</a></td>
-                            <td align="center"><a href="${pageContext.request.contextPath}/lessons_delete">Удалить</a>
+                            <td align="center"><a
+                                    href="${pageContext.request.contextPath}/lessons_delete?lesson_id=${lesson.getLsn_id()}">Удалить</a>
                             </td>
                         </sec:authorize>
                     </tr>
@@ -137,12 +145,14 @@
                         <td align="center">${lesson.getLsn_id()}</td>
                         <td align="left">${lesson.getTopic()}</td>
                         <td align="center">${lesson.getDate()}</td>
-                        <td align="left">${lesson.getGroup_name()}</td>
-                        <td align="left">${lesson.getTutor_name()}</td>
+                        <td align="center">${lesson.getTime()}</td>
+                        <td align="left">${lesson.getGroup().getName()}</td>
+                        <td align="left">${lesson.getTutor().getName()}</td>
                         <sec:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')">
                             <td align="center"><a
                                     href="${pageContext.request.contextPath}/lessons_edit">Редактировать</a></td>
-                            <td align="center"><a href="${pageContext.request.contextPath}/lessons_delete">Удалить</a>
+                            <td align="center"><a
+                                    href="${pageContext.request.contextPath}/lessons_delete?lesson_id=${lesson.getLsn_id()}">Удалить</a>
                             </td>
                         </sec:authorize>
                     </tr>

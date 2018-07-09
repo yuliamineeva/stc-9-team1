@@ -10,9 +10,11 @@ import java.util.Set;
 @Entity
 @Table(name = "groups_h")
 public class Group {
+
     private int group_id;
     private String name;
     private Set<UserH> users = new HashSet<UserH>();
+    private Set<Lesson> lessons;
 
     public Group() {
     }
@@ -53,6 +55,20 @@ public class Group {
         this.users = users;
     }
 
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    public Set<Lesson> getLessons() {
+        return lessons;
+    }
+
+    public void setLessons(Set<Lesson> lessons) {
+        this.lessons = lessons;
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+        
     public void addUser(UserH user) {
         users.add(user);
     }
