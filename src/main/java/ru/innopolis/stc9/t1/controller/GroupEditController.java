@@ -51,9 +51,7 @@ public class GroupEditController{
             }
         }
         model.addAttribute("result", "delErr");
-        model.addAttribute("act", "delete");
-        model.addAttribute("group", groupService.getGroupById(Integer.valueOf(groupId)));
-        return "group_manager";
+        return "error";
     }
 
     @RequestMapping(value = "/groups/add", method = RequestMethod.POST)
@@ -75,8 +73,7 @@ public class GroupEditController{
             }
         }
         model.addAttribute("result", "addErr");
-        model.addAttribute("act", "add");
-        return "group_manager";
+        return "error";
     }
 
     @RequestMapping(value = "/groups/edit", method = RequestMethod.POST)
@@ -97,9 +94,7 @@ public class GroupEditController{
             }
         }
         model.addAttribute("result", "editErr");
-        model.addAttribute("act", "edit");
-        model.addAttribute("group", groupService.getGroupById(Integer.valueOf(groupId)));
-        return "group_manager";
+        return "error";
     }
 
 }

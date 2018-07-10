@@ -16,11 +16,11 @@ import java.util.Set;
 @Service
 public class LessonService {
     private final static Logger logger = Logger.getLogger(LessonService.class);
+    private final LessonDAO lessonDAO;
 
     @Autowired
-    private LessonDAO lessonDAO;
-
-    public LessonService() {
+    public LessonService(LessonDAO lessonDAO) {
+        this.lessonDAO = lessonDAO;
     }
 
     public boolean addLesson(Lesson lesson) {
@@ -32,8 +32,7 @@ public class LessonService {
     }
 
     public List<Lesson> getAllLessons() {
-        List<Lesson> lessonsFromDAO = lessonDAO.getAllLessons();
-        return lessonsFromDAO;
+        return lessonDAO.getAllLessons();
     }
 
     public List<Lesson> getLessonsByGroup(int group_id) {
@@ -50,7 +49,7 @@ public class LessonService {
             Date lessonDate = new SimpleDateFormat("yyyy-MM-dd").parse(date);
             listLessonsByDate = lessonDAO.getLessonsByDate(lessonDate);
         } catch (ParseException e) {
-            e.printStackTrace();
+            logger.error("error to parse date", e);
         }
         return listLessonsByDate;
     }
@@ -65,7 +64,7 @@ public class LessonService {
 
     /**
      * Получить список всех дат, в которые были лекции
-     * @return List<Date>
+     * @return Set<Date>
      */
     public Set<Date> getAllDatesFromLessons() {
         Set<Date> dates = new HashSet<>();
@@ -77,5 +76,15 @@ public class LessonService {
         return dates;
     }
 
+    public Date parseStringDate(String stringDate) {
+        Date date = new Date();
+        try {
+            date = new SimpleDateFormat("yyyy-MM-dd").parse(stringDate);
+            date = new Date(date.getTime() + 24 * 60 * 60 * 1000);
+        } catch (ParseException e) {
+            logger.error("error to parse date", e);
+        }
+        return date;
+    }
 
 }

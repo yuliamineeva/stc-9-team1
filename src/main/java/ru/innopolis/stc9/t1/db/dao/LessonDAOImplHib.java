@@ -1,8 +1,6 @@
 package ru.innopolis.stc9.t1.db.dao;
 
 import org.apache.log4j.Logger;
-import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -22,8 +20,12 @@ import java.util.concurrent.TimeUnit;
 public class LessonDAOImplHib implements LessonDAO {
     private final static Logger logger = Logger.getLogger(LessonDAOImplHib.class);
 
-    @Autowired
     private SessionFactory sessionFactory;
+
+    @Autowired
+    public LessonDAOImplHib(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     @Override
     public boolean addLesson(Lesson lesson) {
@@ -68,16 +70,11 @@ public class LessonDAOImplHib implements LessonDAO {
 
     @Override
     public List<Lesson> getAllLessons() {
-        List<Lesson> lessons = null;
-        try {
-            Session session = sessionFactory.openSession();
-            Criteria criteria = session.createCriteria(Lesson.class);
-            lessons = criteria.list();
-            session.close();
-        } catch (HibernateException | NullPointerException e) {
-            logger.error("error to get all lessons", e);
-        }
-        return lessons;
+        Session session = sessionFactory.openSession();
+        Query query = session.createQuery("from Lesson");
+        List<Lesson> lessons = query.list();
+        session.close();
+        return lessons.size() == 0 ? null : lessons;
     }
 
     @Override

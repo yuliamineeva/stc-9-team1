@@ -13,8 +13,12 @@ import java.util.List;
 
 @Repository
 public class UserDAOImplH implements UserDAO_H {
-    @Autowired
     private SessionFactory factory;
+
+    @Autowired
+    public UserDAOImplH(SessionFactory factory) {
+        this.factory = factory;
+    }
 
     @Override
     public void addUser(UserH user) throws HibernateException {
@@ -72,7 +76,6 @@ public class UserDAOImplH implements UserDAO_H {
         query.setParameter(0, type);
         @SuppressWarnings("unchecked")
         List<UserH> users = query.list();
-        session.close();
         return users;
     }
 

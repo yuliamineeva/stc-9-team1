@@ -57,7 +57,6 @@
                                 <select class="select-groups" id="selectGroup" name="lessonGroup"
                                         style="width: 135px; margin-right: 20px;">
                                     <c:forEach items="${allGroups}" var="group">
-                                        <%--<option value="${group.getGroup_id()}">${group.getName()}</option>--%>
                                         <option value="${group.getGroup_id()}" ${group.getGroup_id() == lesson.getGroup().getGroup_id() ? 'selected' : ''}>${group.getName()}</option>
                                     </c:forEach>
                                 </select>
@@ -67,9 +66,8 @@
                             <td align="left">Выберете лектора:</td>
                             <td align="left">
                                 <select class="select-tutor" id="selectTutor" name="lessonTutor"
-                                        style="width: 135px; margin-right: 20px;">
+                                        style="width: 400px; margin-right: 20px;">
                                     <c:forEach items="${allTutors}" var="tutor">
-                                        <%--<option value="${tutor.getId()}">${tutor.getName()}</option>--%>
                                         <option value="${tutor.getId()}" ${tutor.getId() == lesson.getTutor().getId() ? 'selected' : ''}>${tutor.getName()}</option>
                                     </c:forEach>
                                 </select>

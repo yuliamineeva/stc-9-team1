@@ -8,14 +8,21 @@ import ru.innopolis.stc9.t1.db.connection.CryptoUtils;
 import ru.innopolis.stc9.t1.db.dao.UserDAO_H;
 import ru.innopolis.stc9.t1.entities.RoleH;
 import ru.innopolis.stc9.t1.entities.UserH;
+import ru.innopolis.stc9.t1.pojo.Group;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @Transactional
 public class UserServiceH {
-    @Autowired
+    //    @Autowired
     private UserDAO_H userDAO;
+
+    @Autowired
+    public UserServiceH(UserDAO_H userDAO) {
+        this.userDAO = userDAO;
+    }
 
     public void addUser(String login, String pass, String name) {
         try {
@@ -96,5 +103,17 @@ public class UserServiceH {
         } catch (Exception e) {
             ErrorMsgHandler.setMessage("error while deleting user", e);
         }
+    }
+
+    public List<UserH> getAllUsersNotInGroup(int group_id) {
+        List<UserH> users = userDAO.getAllUsers();
+        List<UserH> usersNotInGroup = new ArrayList<>();
+        userCycle: for(UserH user: users){
+            for(Group group: user.getGroups()){
+                if(group.getGroup_id() == group_id) continue userCycle;
+            }
+            usersNotInGroup.add(user);
+        }
+        return usersNotInGroup;
     }
 }
