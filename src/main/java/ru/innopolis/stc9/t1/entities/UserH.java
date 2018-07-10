@@ -1,8 +1,10 @@
 package ru.innopolis.stc9.t1.entities;
 
+import ru.innopolis.stc9.t1.pojo.Group;
 import ru.innopolis.stc9.t1.pojo.Lesson;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -13,6 +15,7 @@ public class UserH {
     private String password;
     private String name;
     private RoleH role;
+    private Set<Group> groups = new HashSet<>();
     private Set<Lesson> lessons;
 
     public UserH() {
@@ -68,7 +71,7 @@ public class UserH {
     public void setRole(RoleH role) {
         this.role = role;
     }
-
+    
     @OneToMany(mappedBy = "tutor", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     public Set<Lesson> getLessons() {
         return lessons;
@@ -76,6 +79,18 @@ public class UserH {
 
     public void setLessons(Set<Lesson> lessons) {
         this.lessons = lessons;
+    }
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "groups_users",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "group_id"))
+    public Set<Group> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(Set<Group> groups) {
+        this.groups = groups;
     }
 
     @Override

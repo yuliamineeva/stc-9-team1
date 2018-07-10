@@ -1,11 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<%@ page import="ru.innopolis.stc9.t1.service.GroupService" %>
-<%@ page import="ru.innopolis.stc9.t1.pojo.Group" %>
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="ru.innopolis.stc9.t1.db.dao.GroupDAOImpl" %>
-
 <%@ include file="header.jsp" %>
 <%@ include file="aside.jsp" %>
 <div class="main">

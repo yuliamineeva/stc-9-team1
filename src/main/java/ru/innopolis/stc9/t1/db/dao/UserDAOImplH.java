@@ -72,7 +72,6 @@ public class UserDAOImplH implements UserDAO_H {
         query.setParameter(0, type);
         @SuppressWarnings("unchecked")
         List<UserH> users = query.list();
-        session.close();
         return users;
     }
 
