@@ -43,4 +43,9 @@ public class TestContext {
     public UserDAO_H userDao() {
         return Mockito.mock(UserDAOImplH.class);
     }
+
+    @Bean
+    public LessonMarkDAO lessonMarkDAO(){
+        return Mockito.mock(LessonMarkDAOImplHib.class);
+    }
 }
