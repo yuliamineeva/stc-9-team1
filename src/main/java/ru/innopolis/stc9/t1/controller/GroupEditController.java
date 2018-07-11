@@ -7,7 +7,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.innopolis.stc9.t1.db.dao.GroupDAOImpl;
 import ru.innopolis.stc9.t1.pojo.Group;
 import ru.innopolis.stc9.t1.service.GroupService;
 
@@ -32,7 +31,7 @@ public class GroupEditController{
         if (groupId != null) {
             model.addAttribute("group", groupService.getGroupById(Integer.valueOf(groupId)));
         }
-        return "group_manager";
+        return "groups/group_manager";
     }
 
     @RequestMapping(value = "/groups/delete", method = RequestMethod.POST)
@@ -44,7 +43,7 @@ public class GroupEditController{
                 boolean result = groupService.deleteGroup(Integer.valueOf(groupId));
                 if (result) {
                     model.addAttribute("arrayGroup", groupService.getAllGroups());
-                    return "groups";
+                    return "groups/groups";
                 }
             } catch (Exception e) {
                 logger.error("Error to delete group", e);
@@ -66,7 +65,7 @@ public class GroupEditController{
                 boolean result = groupService.addGroup(group);
                 if (result){
                     model.addAttribute("arrayGroup", groupService.getAllGroups());
-                    return "groups";
+                    return "groups/groups";
                 }
             } catch (Exception e) {
                 logger.error("Error to add group", e);
@@ -87,7 +86,7 @@ public class GroupEditController{
                 boolean result = groupService.updateGroup(group);
                 if (result){
                     model.addAttribute("arrayGroup", groupService.getAllGroups());
-                    return "groups";
+                    return "groups/groups";
                 }
             } catch (Exception e) {
                 logger.error("Error to edit group", e);
