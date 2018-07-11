@@ -99,65 +99,6 @@
                 </c:forEach>
             </c:if>
 
-            <c:if test="${listLessonsByGroup != null}">
-                <c:forEach items="${listLessonsByGroup}" var="lesson">
-                    <tr>
-                        <td align="center">${lesson.getLsn_id()}</td>
-                        <td align="left">${lesson.getTopic()}</td>
-                        <td align="center">${lesson.getDate()}</td>
-                        <td align="center">${lesson.getTime()}</td>
-                        <td align="left">${lesson.getGroup().getName()}</td>
-                        <td align="left">${lesson.getTutor().getName()}</td>
-                        <sec:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')">
-                            <td align="center"><a
-                                    href="${pageContext.request.contextPath}/lessons_edit">Редактировать</a></td>
-                            <td align="center"><a
-                                    href="${pageContext.request.contextPath}/lessons_delete?lesson_id=${lesson.getLsn_id()}">Удалить</a>
-                            </td>
-                        </sec:authorize>
-                    </tr>
-                </c:forEach>
-            </c:if>
-
-            <c:if test="${listLessonsByDate != null}">
-                <c:forEach items="${listLessonsByDate}" var="lesson">
-                    <tr>
-                        <td align="center">${lesson.getLsn_id()}</td>
-                        <td align="left">${lesson.getTopic()}</td>
-                        <td align="center">${lesson.getDate()}</td>
-                        <td align="center">${lesson.getTime()}</td>
-                        <td align="left">${lesson.getGroup().getName()}</td>
-                        <td align="left">${lesson.getTutor().getName()}</td>
-                        <sec:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')">
-                            <td align="center"><a
-                                    href="${pageContext.request.contextPath}/lessons_edit">Редактировать</a></td>
-                            <td align="center"><a
-                                    href="${pageContext.request.contextPath}/lessons_delete?lesson_id=${lesson.getLsn_id()}">Удалить</a>
-                            </td>
-                        </sec:authorize>
-                    </tr>
-                </c:forEach>
-            </c:if>
-
-            <c:if test="${listLessonsByTutor != null}">
-                <c:forEach items="${listLessonsByTutor}" var="lesson">
-                    <tr>
-                        <td align="center">${lesson.getLsn_id()}</td>
-                        <td align="left">${lesson.getTopic()}</td>
-                        <td align="center">${lesson.getDate()}</td>
-                        <td align="center">${lesson.getTime()}</td>
-                        <td align="left">${lesson.getGroup().getName()}</td>
-                        <td align="left">${lesson.getTutor().getName()}</td>
-                        <sec:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')">
-                            <td align="center"><a
-                                    href="${pageContext.request.contextPath}/lessons_edit">Редактировать</a></td>
-                            <td align="center"><a
-                                    href="${pageContext.request.contextPath}/lessons_delete?lesson_id=${lesson.getLsn_id()}">Удалить</a>
-                            </td>
-                        </sec:authorize>
-                    </tr>
-                </c:forEach>
-            </c:if>
         </table>
         <sec:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')">
             <p align="center">
@@ -167,23 +108,20 @@
         <%
             String message = " ";
             if (request.getAttribute("lessons") == null &&
-                    request.getAttribute("listLessonsByGroup") == null &&
-                    request.getAttribute("listLessonsByDate") == null &&
-                    request.getAttribute("listLessonsByTutor") == null &&
                     request.getAttribute("lessonsByTutor") == null &&
                     request.getAttribute("lessonsByDate") == null &&
                     request.getAttribute("lessonsByGroup") == null) {
                 message = "Занятия не найдены";
             }
-            if (request.getAttribute("listLessonsByDate") == null &&
+            if (request.getAttribute("lessons") == null &&
                     request.getAttribute("lessonsByDate") != null) {
                 message = "Занятия по данной дате не найдены";
             }
-            if (request.getAttribute("listLessonsByGroup") == null &&
+            if (request.getAttribute("lessons") == null &&
                     request.getAttribute("lessonsByGroup") != null) {
                 message = "Занятия по данной группе не найдены";
             }
-            if (request.getAttribute("listLessonsByTutor") == null &&
+            if (request.getAttribute("lessons") == null &&
                     request.getAttribute("lessonsByTutor") != null) {
                 message = "Занятия по данному лектору не найдены";
             }

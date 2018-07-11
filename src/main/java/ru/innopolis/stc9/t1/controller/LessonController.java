@@ -15,115 +15,80 @@ import ru.innopolis.stc9.t1.service.LessonService;
 import ru.innopolis.stc9.t1.service.UserServiceH;
 
 import java.sql.Time;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.Set;
+
 
 @Controller
 public class LessonController {
     private final static Logger logger = Logger.getLogger(LessonController.class);
-
-    @Autowired
     private LessonService lessonService;
-
-    @Autowired
     private GroupService groupService;
+    private UserServiceH userService;
 
     @Autowired
-    private UserServiceH userService;
+    public LessonController(LessonService lessonService, GroupService groupService, UserServiceH userService) {
+        this.lessonService = lessonService;
+        this.groupService = groupService;
+        this.userService = userService;
+    }
 
     @RequestMapping(value = "/lessons", method = RequestMethod.GET)
     public String getLessons(@RequestParam(value = "lessonsByGroup", required = false) String lessonsByGroup,
                              @RequestParam(value = "lessonsByDate", required = false) String lessonsByDate,
                              @RequestParam(value = "lessonsByTutor", required = false) String lessonsByTutor, Model model) {
-        ArrayList<Group> allGroups = groupService.getAllGroups();
-        Set<Date> dates = lessonService.getAllDatesFromLessons();
-        List<UserH> allTutors = userService.getAllUsersByType(1);
-        model.addAttribute("allGroups", allGroups);
-        model.addAttribute("dates", dates);
-        model.addAttribute("allTutors", allTutors);
-        List<Lesson> lessons = lessonService.getAllLessons();
-        model.addAttribute("lessons", lessons);
-        List<Lesson> listLessonsByGroup;
-        List<Lesson> listLessonsByDate;
-        List<Lesson> listLessonsByTutor;
+        model.addAttribute("allGroups", groupService.getAllGroups());
+        model.addAttribute("dates", lessonService.getAllDatesFromLessons());
+        model.addAttribute("allTutors", userService.getAllUsersByType(1));
         if (lessonsByGroup != null && !lessonsByGroup.equals("all")) {
-            listLessonsByGroup = lessonService.getLessonsByGroup(Integer.parseInt(lessonsByGroup));
-            model.addAttribute("listLessonsByGroup", listLessonsByGroup);
             model.addAttribute("lessonsByGroup", lessonsByGroup);
-            lessons = null;
-            model.addAttribute("lessons", lessons);
+            model.addAttribute("lessons", lessonService.getLessonsByGroup(Integer.parseInt(lessonsByGroup)));
         } else if (lessonsByDate != null && !lessonsByDate.equals("all")) {
-            listLessonsByDate = lessonService.getLessonsByDate(lessonsByDate);
-            model.addAttribute("listLessonsByDate", listLessonsByDate);
             model.addAttribute("lessonsByDate", lessonsByDate);
-            lessons = null;
-            model.addAttribute("lessons", lessons);
+            model.addAttribute("lessons", lessonService.getLessonsByDate(lessonsByDate));
         } else if (lessonsByTutor != null && !lessonsByTutor.equals("all")) {
-            listLessonsByTutor = lessonService.getLessonsByTutor(Integer.parseInt(lessonsByTutor));
-            model.addAttribute("listLessonsByTutor", listLessonsByTutor);
             model.addAttribute("lessonsByTutor", lessonsByTutor);
-            lessons = null;
-            model.addAttribute("lessons", lessons);
+            model.addAttribute("lessons", lessonService.getLessonsByTutor(Integer.parseInt(lessonsByTutor)));
         } else {
-            lessons = lessonService.getAllLessons();
-            model.addAttribute("lessons", lessons);
+            model.addAttribute("lessons", lessonService.getAllLessons());
         }
         return "lessons/lessons";
     }
 
-
     @RequestMapping(value = "/lessons_add", method = RequestMethod.GET)
     public String addLessonPage(Model model) {
-        ArrayList<Group> allGroups = groupService.getAllGroups();
-        List<UserH> allTutors = userService.getAllUsersByType(1);
-        model.addAttribute("allGroups", allGroups);
-        model.addAttribute("allTutors", allTutors);
+        model.addAttribute("allGroups", groupService.getAllGroups());
+        model.addAttribute("allTutors", userService.getAllUsersByType(1));
         return "lessons/lessons_add";
     }
 
     @RequestMapping(value = "/lessons_add", method = RequestMethod.POST)
     public String addLesson(@RequestParam(value = "lessonTopic", required = false) String lessonTopic,
                             @RequestParam(value = "lessonDate", required = false) String lessonDate,
-//                            @RequestParam(value = "lessonDate", required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date lessonDate,
                             @RequestParam(value = "lessonTime", required = false) Time lessonTime,
                             @RequestParam(value = "lessonGroup", required = false) String lessonGroup,
                             @RequestParam(value = "lessonTutor", required = false) String lessonTutor, Model model) {
-        ArrayList<Group> allGroups = groupService.getAllGroups();
-        List<UserH> allTutors = userService.getAllUsersByType(1);
-        model.addAttribute("allGroups", allGroups);
-        model.addAttribute("allTutors", allTutors);
+        model.addAttribute("allGroups", groupService.getAllGroups());
+        model.addAttribute("allTutors", userService.getAllUsersByType(1));
         if (lessonTopic.isEmpty() || lessonGroup == null || lessonTutor == null) {
             model.addAttribute("message", "EmptyField");
-        } else {
-            Group group = groupService.getGroupById(Integer.parseInt(lessonGroup));
-            UserH tutor = userService.getUser(Integer.parseInt(lessonTutor));
-            Date date = new Date();
-            try {
-                date = new SimpleDateFormat("yyyy-MM-dd").parse(lessonDate);
-                date = new Date(date.getTime() + 24 * 60 * 60 * 1000);
-            } catch (ParseException e) {
-                logger.error("error to parse date", e);
-            }
-            boolean result = lessonService.addLesson(new Lesson(lessonTopic, date, lessonTime, group, tutor));
-            if (result) {
-                return getLessons("all", "all", "all", model);
-            } else {
-                model.addAttribute("message", "errAddLesson");
-            }
+            return "lessons/lessons_add";
         }
-        return "lessons/lessons_add";
+        Group group = groupService.getGroupById(Integer.parseInt(lessonGroup));
+        UserH tutor = userService.getUser(Integer.parseInt(lessonTutor));
+        Date date = lessonService.parseStringDate(lessonDate);
+        boolean result = lessonService.addLesson(new Lesson(lessonTopic, date, lessonTime, group, tutor));
+        if (result) {
+            return getLessons("all", "all", "all", model);
+        } else {
+            model.addAttribute("message", "errAddLesson");
+            return "lessons/lessons_add";
+        }
     }
 
     @RequestMapping(value = "/lessons_edit", method = RequestMethod.GET)
     public String editLessonPage(@RequestParam(value = "lesson_id", required = false) String lesson_id, Model model) {
-        ArrayList<Group> allGroups = groupService.getAllGroups();
-        List<UserH> allTutors = userService.getAllUsersByType(1);
-        model.addAttribute("allGroups", allGroups);
-        model.addAttribute("allTutors", allTutors);
+        model.addAttribute("allGroups", groupService.getAllGroups());
+        model.addAttribute("allTutors", userService.getAllUsersByType(1));
         if (lesson_id != null) {
             model.addAttribute("lesson", lessonService.getLessonById(Integer.valueOf(lesson_id)));
         }
@@ -137,31 +102,23 @@ public class LessonController {
                              @RequestParam(value = "lessonTime", required = false) Time lessonTime,
                              @RequestParam(value = "lessonGroup", required = false) String lessonGroup,
                              @RequestParam(value = "lessonTutor", required = false) String lessonTutor, Model model) {
-        ArrayList<Group> allGroups = groupService.getAllGroups();
-        List<UserH> allTutors = userService.getAllUsersByType(1);
-        model.addAttribute("allGroups", allGroups);
-        model.addAttribute("allTutors", allTutors);
+        model.addAttribute("allGroups", groupService.getAllGroups());
+        model.addAttribute("allTutors", userService.getAllUsersByType(1));
         if (lessonTopic.isEmpty() || lessonGroup == null || lessonTutor == null || lessonTime == null) {
             model.addAttribute("message", "EmptyField");
             model.addAttribute("lesson", lessonService.getLessonById(Integer.valueOf(lessonId)));
-        } else {
-            Group group = groupService.getGroupById(Integer.parseInt(lessonGroup));
-            UserH tutor = userService.getUser(Integer.parseInt(lessonTutor));
-            Date date = new Date();
-            try {
-                date = new SimpleDateFormat("yyyy-MM-dd").parse(lessonDate);
-                date = new Date(date.getTime() + 24 * 60 * 60 * 1000);
-            } catch (ParseException e) {
-                logger.error("error to parse date", e);
-            }
-            boolean result = lessonService.updateLesson(new Lesson(Integer.parseInt(lessonId), lessonTopic, date, lessonTime, group, tutor));
-            if (result) {
-                return getLessons("all", "all", "all", model);
-            } else {
-                model.addAttribute("message", "errEditLesson");
-            }
+            return "lessons/lessons_edit";
         }
-        return "lessons/lessons_edit";
+        Group group = groupService.getGroupById(Integer.parseInt(lessonGroup));
+        UserH tutor = userService.getUser(Integer.parseInt(lessonTutor));
+        Date date = lessonService.parseStringDate(lessonDate);
+        boolean result = lessonService.updateLesson(new Lesson(Integer.parseInt(lessonId), lessonTopic, date, lessonTime, group, tutor));
+        if (result) {
+            return getLessons("all", "all", "all", model);
+        } else {
+            model.addAttribute("message", "errEditLesson");
+            return "lessons/lessons_edit";
+        }
     }
 
 
@@ -186,8 +143,7 @@ public class LessonController {
                 model.addAttribute("message", "errDeleteLesson");
             }
         }
-        List<Lesson> lessons = lessonService.getAllLessons();
-        model.addAttribute("lessons", lessons);
+        model.addAttribute("lessons", lessonService.getAllLessons());
         return "lessons/lessons_delete";
     }
 }

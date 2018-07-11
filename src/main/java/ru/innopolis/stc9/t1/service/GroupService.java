@@ -14,8 +14,13 @@ import java.util.ArrayList;
 public class GroupService {
     private final static Logger logger = Logger.getLogger(GroupService.class);
 
-    @Autowired
+    //    @Autowired
     private GroupDAOImplH groupDAO;
+
+    @Autowired
+    public GroupService(GroupDAOImplH groupDAO) {
+        this.groupDAO = groupDAO;
+    }
 
     public GroupService() {}
 

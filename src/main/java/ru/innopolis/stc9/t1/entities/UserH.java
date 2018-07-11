@@ -27,6 +27,11 @@ public class UserH {
         this.name = name;
     }
 
+    public UserH(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

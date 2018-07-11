@@ -13,11 +13,12 @@ import java.util.List;
 @Repository
 public class GroupDAOImplH implements GroupDAO{
     private final static Logger logger = Logger.getLogger(GroupDAOImplH.class);
-
-    @Autowired
     private SessionFactory sessionFactory;
 
-    public GroupDAOImplH(){}
+    @Autowired
+    public GroupDAOImplH(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     @Override
     public Group getGroupById(int id) {

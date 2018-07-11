@@ -16,8 +16,13 @@ import java.util.List;
 @Service
 @Transactional
 public class UserServiceH {
-    @Autowired
+    //    @Autowired
     private UserDAO_H userDAO;
+
+    @Autowired
+    public UserServiceH(UserDAO_H userDAO) {
+        this.userDAO = userDAO;
+    }
 
     public void addUser(String login, String pass, String name) {
         try {
