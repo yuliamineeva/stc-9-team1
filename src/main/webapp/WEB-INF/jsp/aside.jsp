@@ -19,7 +19,7 @@
             <br>
             <li><a href="${pageContext.request.contextPath}/lessons">Лекции</a></li>
             <br>
-            <li><a href="${pageContext.request.contextPath}/lessonMark">Посещяемость</a></li>
+            <li><a href="${pageContext.request.contextPath}/lessonMark">Посещаемость</a></li>
             <br>
             <sec:authorize access="hasRole('ROLE_ADMIN')">
                 <li><a href="${pageContext.request.contextPath}/admin/userList">Список пользователей</a></li>
