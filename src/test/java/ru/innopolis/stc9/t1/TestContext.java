@@ -45,7 +45,12 @@ public class TestContext {
     }
 
     @Bean
-    public LessonMarkDAO lessonMarkDAO(){
-        return Mockito.mock(LessonMarkDAOImplHib.class);
+    public ErrorMsgHandler errorMsgHandler() {
+        return Mockito.mock(ErrorMsgHandler.class);
     }
+
+//    @Bean
+//    public LessonMarkDAO lessonMarkDAO(){
+//        return Mockito.mock(LessonMarkDAOImplHib.class);
+//    }
 }
