@@ -16,7 +16,6 @@ import java.util.List;
 @Service
 @Transactional
 public class UserServiceH {
-    //    @Autowired
     private UserDAO_H userDAO;
 
     @Autowired
