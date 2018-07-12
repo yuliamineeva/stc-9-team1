@@ -58,7 +58,7 @@ public class GroupDAOImplH implements GroupDAO{
         Group findGroup = getGroupByName(group.getName());
         if(findGroup != null && findGroup.getGroup_id() != group.getGroup_id()) return false;
         Session session = sessionFactory.getCurrentSession();
-        session.merge(group);
+        session.update(group);
         return true;
     }
 
