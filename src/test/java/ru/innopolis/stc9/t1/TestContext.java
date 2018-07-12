@@ -44,6 +44,11 @@ public class TestContext {
         return Mockito.mock(UserDAOImplH.class);
     }
 
+    @Bean
+    public ErrorMsgHandler errorMsgHandler() {
+        return Mockito.mock(ErrorMsgHandler.class);
+    }
+
 //    @Bean
 //    public LessonMarkDAO lessonMarkDAO(){
 //        return Mockito.mock(LessonMarkDAOImplHib.class);
