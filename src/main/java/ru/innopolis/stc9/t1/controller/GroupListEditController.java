@@ -7,10 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.innopolis.stc9.t1.db.dao.GroupListDAOImpl;
 import ru.innopolis.stc9.t1.entities.UserH;
 import ru.innopolis.stc9.t1.pojo.Group;
-import ru.innopolis.stc9.t1.service.GroupListService;
 import ru.innopolis.stc9.t1.service.GroupService;
 import ru.innopolis.stc9.t1.service.UserServiceH;
 
@@ -48,7 +46,7 @@ public class GroupListEditController {
         if (userId != null) {
             model.addAttribute("user", userService.getUser(Integer.valueOf(userId)));
         }
-        return "group_list_manager";
+        return "groups/group_list_manager";
     }
 
     @RequestMapping(value = "/group_list/delete", method = RequestMethod.POST)
@@ -67,7 +65,7 @@ public class GroupListEditController {
                             groupService.updateGroup(group);
                             model.addAttribute("group", group);
                             model.addAttribute("groupList", group.getUsers());
-                            return "group_list";
+                            return "groups/group_list";
                         }
                         break;
                     }
@@ -93,7 +91,7 @@ public class GroupListEditController {
                 groupService.updateGroup(group);
                 model.addAttribute("group", group);
                 model.addAttribute("groupList", group.getUsers());
-                return "group_list";
+                return "groups/group_list";
             } catch (Exception e) {
                 logger.error("Error to add user in group", e);
             }

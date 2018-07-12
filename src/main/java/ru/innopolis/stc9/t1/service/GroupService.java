@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.innopolis.stc9.t1.db.dao.GroupDAO;
 import ru.innopolis.stc9.t1.db.dao.GroupDAOImplH;
 import ru.innopolis.stc9.t1.pojo.Group;
 
@@ -13,12 +14,10 @@ import java.util.ArrayList;
 @Transactional
 public class GroupService {
     private final static Logger logger = Logger.getLogger(GroupService.class);
-
-    //    @Autowired
-    private GroupDAOImplH groupDAO;
+    private GroupDAO groupDAO;
 
     @Autowired
-    public GroupService(GroupDAOImplH groupDAO) {
+    public GroupService(GroupDAO groupDAO) {
         this.groupDAO = groupDAO;
     }
 
