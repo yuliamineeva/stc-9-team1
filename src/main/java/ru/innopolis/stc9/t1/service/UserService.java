@@ -1,19 +1,10 @@
 package ru.innopolis.stc9.t1.service;
 
-import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
-import ru.innopolis.stc9.t1.ErrorMsgHandler;
-import ru.innopolis.stc9.t1.db.connection.CryptoUtils;
-import ru.innopolis.stc9.t1.db.dao.UserDAO;
-import ru.innopolis.stc9.t1.db.dao.UserDAOImpl;
-import ru.innopolis.stc9.t1.pojo.User;
-
-import java.sql.SQLException;
-import java.util.List;
 
 @Service
 public class UserService {
-    private final static Logger logger = Logger.getLogger(UserService.class);
+    /*private final static Logger logger = Logger.getLogger(UserService.class);
     private UserDAO userDao;
 
     public UserService() {
@@ -133,5 +124,5 @@ public class UserService {
         }
     }
 
-
+*/
 }
